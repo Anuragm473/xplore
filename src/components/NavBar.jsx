@@ -1,5 +1,5 @@
 import React from 'react'
-import { Globe, MapPin, Calendar, Star, Users, ChevronDown, ChevronRight,Heart, ArrowRight, PhoneCall, Mail, Clock, CheckCircle, Compass, Camera, Map, Menu, X, Search, User, ChevronLeft } from 'lucide-react';
+import {Menu, X} from 'lucide-react';
 
 
 export default function NavBar({isScrolled,navLinks,navbarOpen}) {
@@ -16,7 +16,7 @@ export default function NavBar({isScrolled,navLinks,navbarOpen}) {
             {/* Logo */}
             <a href="#" className="flex items-center">
               <span className={`text-2xl font-bold ${isScrolled ? 'text-teal-600' : 'text-white'}`}>
-                <span className="text-amber-500">X</span>plore
+                <span className="text-amber-500">X</span>plore World
               </span>
             </a>
 

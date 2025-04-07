@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import { Calendar, Star, ChevronRight,Heart, ArrowRight,ChevronLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from './Image';
 
-export default function Package({activeTab,packages,activeSlide,favorites}) {
+export default function Package({activeTab,setActiveTab,packages,activeSlide,favorites,setActiveSlide,nextSlide,prevSlide,toggleFavorite}) {
+
+      
   return (
     <section className="py-16 bg-gray-50" id="packages">
       <div className="container mx-auto px-4 md:px-6">
@@ -29,6 +32,12 @@ export default function Package({activeTab,packages,activeSlide,favorites}) {
             >
               Local
             </button>
+            <button
+              onClick={() => setActiveTab('fixesDeparture')}
+              className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 ${activeTab === 'fixesDeparture' ? 'bg-teal-600 text-white shadow-md' : 'text-gray-700 hover:bg-gray-200'}`}
+            >
+              Fixes Departure
+            </button>
           </div>
         </div>
         
@@ -41,47 +50,8 @@ export default function Package({activeTab,packages,activeSlide,favorites}) {
               transition={{ duration: 0.5 }}
               className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
             >
-              <div className="relative overflow-hidden h-56">
-                {/* Image slider */}
-                <img 
-                  src={`/api/placeholder/400/320`} 
-                  alt={`${pkg.destination} - ${activeSlide[pkg.id] + 1}`} 
-                  className="w-full h-full object-cover transition-transform duration-500"
-                />
+              <Image favorites={favorites} toggleFavorite={toggleFavorite} pkg={pkg}/> 
                 
-                {/* Navigation arrows */}
-                <button 
-                  onClick={() => prevSlide(pkg.id)} 
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-1 shadow-md hover:bg-teal-500 hover:text-white transition-colors"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button 
-                  onClick={() => nextSlide(pkg.id)} 
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-1 shadow-md hover:bg-teal-500 hover:text-white transition-colors"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-                
-                {/* Image counter */}
-                <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded-full">
-                  {activeSlide[pkg.id] + 1}/{pkg.images.length}
-                </div>
-                
-                {/* Rating badge */}
-                <div className="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full flex items-center shadow-sm">
-                  <Star className="w-4 h-4 text-amber-500 mr-1 fill-current" />
-                  <span className="text-sm font-medium">{pkg.rating}</span>
-                </div>
-                
-                {/* Favorite button */}
-                <button 
-                  onClick={() => toggleFavorite(pkg.id)}
-                  className={`absolute top-3 left-3 p-2 rounded-full ${favorites.includes(pkg.id) ? 'bg-red-500 text-white' : 'bg-white bg-opacity-90 text-gray-600'} shadow-sm transition-colors`}
-                >
-                  <Heart className={`w-4 h-4 ${favorites.includes(pkg.id) ? 'fill-current' : ''}`} />
-                </button>
-              </div>
               
               <div className="p-5">
                 <h3 className="text-lg font-bold mb-1">{pkg.destination}</h3>

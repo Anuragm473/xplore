@@ -4,6 +4,11 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 
 export default function FAQ() {
     const [activeFaq, setActiveFaq] = useState(null);
+
+    const toggleFaq = (index) => {
+        setActiveFaq(activeFaq === index ? null : index);
+      };
+      
     const faqs = [
         { question: 'How do I book a tour package?', answer: 'Booking is simple! Browse our packages, select your preferred one, click "Book Now", fill in your details, and complete the payment process. You\'ll receive a confirmation email with all details.' },
         { question: 'What is your cancellation policy?', answer: 'We offer free cancellation up to 30 days before your trip. Cancellations made 15-29 days prior receive a 50% refund. Cancellations less than 15 days before departure are non-refundable.' },

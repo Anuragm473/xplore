@@ -48,10 +48,6 @@ const App = () => {
     };
   }, []);
 
-  // Toggle FAQ accordion
-  const toggleFaq = (index) => {
-    setActiveFaq(activeFaq === index ? null : index);
-  };
 
   // Auto-rotate testimonials
   useEffect(() => {
@@ -103,6 +99,9 @@ const App = () => {
     packages.local.forEach(pkg => {
       initialSlides[pkg.id] = 0;
     });
+    packages.fixesDeparture.forEach(pkg => {
+      initialSlides[pkg.id] = 0;
+    });
     setActiveSlide(initialSlides);
   }, []);
 
@@ -147,6 +146,44 @@ const App = () => {
       }
     ],
     local: [
+      {
+        id: 5,
+        destination: 'Grand Canyon',
+        images: ['GrandCanyon.jpg', 'grandcanyon_rim.jpg', 'grandcanyon_river.jpg', 'grandcanyon_hike.jpg', 'grandcanyon_sunset.jpg'],
+        duration: '3 Days',
+        price: '$699',
+        rating: 4.6,
+        description: 'Natural wonder with magnificent landscapes and hiking trails'
+      },
+      {
+        id: 6,
+        destination: 'Yellowstone Park',
+        images: ['YellowstonePark.jpg', 'yellowstone_geyser.jpg', 'yellowstone_wildlife.jpg', 'yellowstone_lake.jpg', 'yellowstone_forest.jpg'],
+        duration: '4 Days',
+        price: '$899',
+        rating: 4.7,
+        description: 'Iconic national park with geysers and diverse wildlife'
+      },
+      {
+        id: 7,
+        destination: 'New York City',
+        images: ['NewYorkCity.jpg', 'nyc_times_square.jpg', 'nyc_central_park.jpg', 'nyc_brooklyn.jpg', 'nyc_statue.jpg', 'nyc_skyline.jpg'],
+        duration: '5 Days',
+        price: '$1,299',
+        rating: 4.8,
+        description: 'The city that never sleeps with iconic landmarks and vibrant culture'
+      },
+      {
+        id: 8,
+        destination: 'Miami Beach',
+        images: ['MiamiBeach.jpg', 'miami_ocean.jpg', 'miami_nightlife.jpg', 'miami_art.jpg', 'miami_palm.jpg'],
+        duration: '4 Days',
+        price: '$999',
+        rating: 4.5,
+        description: 'Sun-soaked beaches and vibrant art deco district'
+      }
+    ],
+    fixesDeparture: [
       {
         id: 5,
         destination: 'Grand Canyon',
@@ -239,7 +276,7 @@ const App = () => {
       <Banner currentDestination={currentDestination} mousePosition={mousePosition}/>
 
       {/* Tour Packages Section */}
-      <Package activeTab={activeTab} packages={packages} activeSlide={activeSlide} favorites={favorites}/>
+      <Package activeTab={activeTab} packages={packages} activeSlide={activeSlide} favorites={favorites} setActiveTab={setActiveTab} setFavorites={setFavorites} toggleFavorite={toggleFavorite} nextSlide={nextSlide} prevSlide={prevSlide}/>
 
       {/* Why Choose Xplore Section - Enhanced */}
       <Why/>
