@@ -69,9 +69,9 @@ export default function Banner({ currentDestination, mousePosition, setCurrentDe
             })`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            transform: window.innerWidth > 768 
-              ? `translate(${mousePosition.x / 30}px, ${mousePosition.y / 30}px) scale(1.15)`
-              : 'none',
+            // transform: window.innerWidth > 768 
+            //   ? `translate(${mousePosition.x / 30}px, ${mousePosition.y / 30}px) scale(1.15)`
+            //   : 'none',
           }}
           transition={{ type: 'spring', damping: 20, stiffness: 100 }}
         />
@@ -83,10 +83,10 @@ export default function Banner({ currentDestination, mousePosition, setCurrentDe
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: 0.3,
-              transform: `translate(
-                ${mousePosition.x / 15}px, 
-                ${mousePosition.y / 15}px
-              ) scale(1.2)`,
+              // transform: `translate(
+              //   ${mousePosition.x / 15}px, 
+              //   ${mousePosition.y / 15}px
+              // ) scale(1.2)`,
               mixBlendMode: 'overlay'
             }}
             transition={{ type: 'spring', damping: 30, stiffness: 100 }}
