@@ -48,33 +48,48 @@ export default function Package({ activeTab, setActiveTab, packages, activeSlide
         </motion.div>
         
         {/* Enhanced Tab Navigation */}
-        <div className="flex justify-center mb-16">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="inline-flex rounded-full p-1 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 shadow-lg"
-          >
-            {['international', 'local', 'fixesDeparture'].map((tab) => (
-              <motion.button
-                key={tab}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveTab(tab)}
-                className={`px-8 py-3 rounded-full font-medium transition-all duration-300 flex items-center ${
-                  activeTab === tab 
-                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 shadow-lg shadow-amber-500/30' 
-                    : 'text-slate-300 hover:bg-slate-700/50'
-                }`}
-              >
-                {tab === 'international' && <Globe className="w-5 h-5 mr-2" />}
-                {tab === 'local' && <MapPin className="w-5 h-5 mr-2" />}
-                {tab === 'fixesDeparture' && <Calendar className="w-5 h-5 mr-2" />}
-                {tab.split(/(?=[A-Z])/).join(' ')}
-              </motion.button>
-            ))}
-          </motion.div>
-        </div>
+        <div className="flex justify-center mb-8 md:mb-16 px-4">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.3 }}
+    className="inline-flex rounded-full p-1 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 shadow-lg w-full md:w-auto"
+  >
+    <div className="flex flex-row md:flex-nowrap overflow-x-auto w-full no-scrollbar">
+      {['international', 'local', 'fixesDeparture'].map((tab) => (
+        <motion.button
+          key={tab}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setActiveTab(tab)}
+          className={`px-4 py-2 md:px-8 md:py-3 rounded-full font-medium transition-all duration-300 flex items-center flex-shrink-0 ${
+            activeTab === tab 
+              ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 shadow-lg shadow-amber-500/30' 
+              : 'text-slate-300 hover:bg-slate-700/50'
+          }`}
+        >
+          {tab === 'international' && <Globe className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />}
+          {tab === 'local' && <MapPin className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />}
+          {tab === 'fixesDeparture' && <Calendar className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />}
+          <span className="text-sm md:text-base">
+            {tab === 'fixesDeparture' ? 'Fixed Departures' : tab.split(/(?=[A-Z])/).join(' ')}
+          </span>
+        </motion.button>
+      ))}
+    </div>
+  </motion.div>
+</div>
+
+{/* Add this to your global CSS */}
+<style jsx global>{`
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+`}</style>
         
         {/* Enhanced Package Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
