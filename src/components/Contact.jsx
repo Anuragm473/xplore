@@ -168,72 +168,94 @@ export default function Contact() {
             className="lg:col-span-3"
           >
             <div className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 shadow-lg h-full">
-              <h3 className={`${typography.h3} text-slate-50 mb-8`}>Send Us a Message</h3>
-              
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-slate-300 mb-2">Name</label>
-                    <input 
-                      type="text" 
-                      id="name" 
-                      className="w-full p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-300 placeholder-slate-500" 
-                      placeholder="Your name"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-slate-300 mb-2">Email</label>
-                    <input 
-                      type="email" 
-                      id="email" 
-                      className="w-full p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-300 placeholder-slate-500" 
-                      placeholder="Your email"
-                    />
-                  </div>
-                </div>
-                
+            <h3 className={`${typography.h3} text-slate-50 mb-8`}>Send Us a Message</h3>
+            
+            <form className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="package" className="block text-slate-300 mb-2">Package of Interest</label>
-                  <select 
-                    id="package" 
-                    className="w-full p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-300"
-                  >
-                    <option value="" className="text-slate-500">Select a package</option>
-                    <option value="paris" className="text-slate-300">Paris, France</option>
-                    <option value="bali" className="text-slate-300">Bali, Indonesia</option>
-                    <option value="tokyo" className="text-slate-300">Tokyo, Japan</option>
-                    <option value="santorini" className="text-slate-300">Santorini, Greece</option>
-                    <option value="grand-canyon" className="text-slate-300">Grand Canyon</option>
-                    <option value="yellowstone" className="text-slate-300">Yellowstone Park</option>
-                    <option value="new-york" className="text-slate-300">New York City</option>
-                    <option value="miami" className="text-slate-300">Miami Beach</option>
-                    <option value="custom" className="text-slate-300">Custom Package</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-slate-300 mb-2">Message</label>
-                  <textarea 
-                    id="message" 
-                    rows="5" 
+                  <label htmlFor="name" className="block text-slate-300 mb-2">Name</label>
+                  <input 
+                    type="text" 
+                    id="name" 
                     className="w-full p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-300 placeholder-slate-500" 
-                    placeholder="Tell us about your travel plans..."
-                  ></textarea>
+                    placeholder="Your name"
+                  />
                 </div>
-                
-                <motion.button 
-                  whileHover={{ 
-                    scale: 1.02,
-                    boxShadow: `0 0 20px ${colors.primary}40`
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 rounded-xl font-medium hover:from-amber-600 hover:to-amber-700 transition-all duration-300 flex items-center justify-center group"
+                <div>
+                  <label htmlFor="email" className="block text-slate-300 mb-2">Email</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    className="w-full p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-300 placeholder-slate-500" 
+                    placeholder="Your email"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="package" className="block text-slate-300 mb-2">Package of Interest</label>
+                <select 
+                  id="package" 
+                  className="w-full p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-300"
                 >
-                  Send Message
-                  <Send className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                </motion.button>
-              </form>
-            </div>
+                  <option value="" className="text-slate-500">Select a package</option>
+                  <option value="paris" className="text-slate-300">Paris, France</option>
+                  <option value="bali" className="text-slate-300">Bali, Indonesia</option>
+                  <option value="tokyo" className="text-slate-300">Tokyo, Japan</option>
+                  <option value="santorini" className="text-slate-300">Santorini, Greece</option>
+                  <option value="grand-canyon" className="text-slate-300">Grand Canyon</option>
+                  <option value="yellowstone" className="text-slate-300">Yellowstone Park</option>
+                  <option value="new-york" className="text-slate-300">New York City</option>
+                  <option value="miami" className="text-slate-300">Miami Beach</option>
+                  <option value="custom" className="text-slate-300">Custom Package</option>
+                </select>
+              </div>
+              
+              <div>
+                <label htmlFor="message" className="block text-slate-300 mb-2">Message</label>
+                <textarea 
+                  id="message" 
+                  rows="5" 
+                  className="w-full p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-300 placeholder-slate-500" 
+                  placeholder="Tell us about your travel plans..."
+                ></textarea>
+              </div>
+              
+              {/* New Visa & Flight Services Checkbox */}
+              <motion.div 
+                whileHover={{ x: 3 }}
+                className="flex items-start group"
+              >
+                <div className="flex items-center h-5 mt-0.5">
+                  <input 
+                    id="additional-services"
+                    type="checkbox" 
+                    className="w-4 h-4 rounded border border-slate-700 bg-slate-900/50 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-800 text-amber-500 transition-all"
+                  />
+                </div>
+                <div className="ml-3">
+                  <label htmlFor="additional-services" className="text-slate-300 group-hover:text-amber-400 transition-colors">
+                    <span className="block text-sm font-medium">Also inquire about:</span>
+                    <span className="block text-sm text-slate-400 group-hover:text-amber-300 transition-colors">
+                      Visa assistance & flight booking services
+                    </span>
+                  </label>
+                </div>
+              </motion.div>
+              
+              <motion.button 
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: `0 0 20px ${colors.primary}40`
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 rounded-xl font-medium hover:from-amber-600 hover:to-amber-700 transition-all duration-300 flex items-center justify-center group"
+              >
+                Send Message
+                <Send className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+              </motion.button>
+            </form>
+          </div>
           </motion.div>
         </div>
       </div>
