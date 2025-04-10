@@ -9,6 +9,7 @@ import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import CallToAction from './components/CallToAction';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('international');
@@ -111,7 +112,7 @@ const App = () => {
       {
         id: 1,
         destination: 'Paris, France',
-        images: ['paris.jpg', 'paris_eiffel.jpg', 'paris_louvre.jpg', 'paris_cafe.jpg', 'paris_seine.jpg'],
+        images: ['paris.jpg', 'bali.webp', 'tokyo.jpg', 'paris.jpg', 'Santorini.jpg'],
         duration: '7 Days',
         price: '$1,599',
         rating: 4.8,
@@ -120,7 +121,7 @@ const App = () => {
       {
         id: 2,
         destination: 'Bali, Indonesia',
-        images: ['bali.webp', 'bali_beach.jpg', 'bali_temple.jpg', 'bali_rice.jpg', 'bali_villa.jpg'],
+        images: ['bali.webp', 'paris.jpg', 'Santorini.jpg', 'tokyo.jpg', 'bali.webp'],
         duration: '10 Days',
         price: '$1,899',
         rating: 4.9,
@@ -129,7 +130,7 @@ const App = () => {
       {
         id: 3,
         destination: 'Tokyo, Japan',
-        images: ['tokyo.jpg', 'tokyo_tower.jpg', 'tokyo_sakura.jpg', 'tokyo_temple.jpg', 'tokyo_street.jpg'],
+        images: ['tokyo.jpg', 'Santorini.jpg', 'paris.jpg', 'bali.webp', 'Santorini.jpg'],
         duration: '8 Days',
         price: '$2,199',
         rating: 4.7,
@@ -138,7 +139,7 @@ const App = () => {
       {
         id: 4,
         destination: 'Santorini, Greece',
-        images: ['Santorini.jpg', 'santorini_sunset.jpg', 'santorini_beach.jpg', 'santorini_village.jpg', 'santorini_boat.jpg'],
+        images: ['Santorini.jpg', 'bali.webp', 'tokyo.jpg', 'paris.jpg', 'bali.webp'],
         duration: '6 Days',
         price: '$1,799',
         rating: 4.8,
@@ -149,7 +150,7 @@ const App = () => {
       {
         id: 5,
         destination: 'Grand Canyon',
-        images: ['GrandCanyon.jpg', 'grandcanyon_rim.jpg', 'grandcanyon_river.jpg', 'grandcanyon_hike.jpg', 'grandcanyon_sunset.jpg'],
+        images: ['GrandCanyon.jpg', 'tokyo.jpg', 'YellowstonePark.jpg', 'NewYorkCity.jpg', 'grandcanyon_sunset.jpg'],
         duration: '3 Days',
         price: '$699',
         rating: 4.6,
@@ -158,7 +159,7 @@ const App = () => {
       {
         id: 6,
         destination: 'Yellowstone Park',
-        images: ['YellowstonePark.jpg', 'yellowstone_geyser.jpg', 'yellowstone_wildlife.jpg', 'yellowstone_lake.jpg', 'yellowstone_forest.jpg'],
+        images: ['YellowstonePark.jpg', 'yellowstone_geyser.jpg', 'GrandCanyon.jpg', 'yellowstone_lake.jpg', 'NewYorkCity.jpg'],
         duration: '4 Days',
         price: '$899',
         rating: 4.7,
@@ -252,7 +253,7 @@ const App = () => {
 
 
   const testimonials = [
-    { name: 'Sarah Johnson', location: 'New York', image: 'download.jfif', rating: 5, text: 'Our trip to Bali was absolutely perfect! The accommodations were luxurious and the local guide made us feel like family. Will definitely book with Xplore again!' },
+    { name: 'Sarah Johnson', location: 'New York', image: 'download.jfif', rating: 5, text: 'Our trip to Bali was absolutely perfect! The accommodations were luxurious and the local guide made us feel like family. Will definitely book with Xplore World again!' },
     { name: 'David Chen', location: 'California', image: 'download.jfif', rating: 5, text: 'The Paris tour exceeded all expectations. Our guide was incredibly knowledgeable, and the itinerary had the perfect balance of iconic sites and hidden gems.' },
     { name: 'Maya Patel', location: 'Texas', image: 'download.jfif', rating: 4, text: 'Yellowstone was breathtaking! The tour was well organized and our guide was passionate about wildlife conservation. The accommodations were comfortable and scenic.' }
   ];
@@ -282,19 +283,7 @@ const App = () => {
       <Why/>
 
       {/* CTA Banner Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-900 to-gray-900 text-white">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to pack your bags?</h2>
-          <p className="text-xl mb-8">Let's Xplore together!</p>
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-orange-500 text-white rounded-full font-medium hover:bg-orange-600 transition-all text-lg"
-          >
-            Start Planning Your Trip
-          </motion.button>
-        </div>
-      </section>
+      <CallToAction/>
 
       {/* Testimonials Section */}
       <Testimonials testimonials={testimonials} currentTestimonial={currentTestimonial}/>

@@ -55,18 +55,18 @@ export default function Image({ favorites, toggleFavorite, pkg }) {
       </div>
       
       {/* Rating badge */}
-      <div className="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full flex items-center shadow-sm">
+      {/* <div className="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full flex items-center shadow-sm">
         <Star className="w-4 h-4 text-amber-500 mr-1 fill-current" />
         <span className="text-sm font-medium">{pkg.rating}</span>
-      </div>
+      </div> */}
       
       {/* Favorite button */}
-      <button 
+      {/* <button 
         onClick={() => toggleFavorite(pkg.id)}
         className={`absolute top-3 left-3 p-2 rounded-full ${favorites.includes(pkg.id) ? 'bg-red-500 text-white' : 'bg-white bg-opacity-90 text-gray-600'} shadow-sm transition-colors`}
       >
         <Heart className={`w-4 h-4 ${favorites.includes(pkg.id) ? 'fill-current' : ''}`} />
-      </button>
+      </button> */}
     </div>
   )
 }
