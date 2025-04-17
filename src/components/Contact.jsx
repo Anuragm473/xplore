@@ -221,27 +221,26 @@ export default function Contact() {
                 ></textarea>
               </div>
               
-              {/* New Visa & Flight Services Checkbox */}
-              <motion.div 
-                whileHover={{ x: 3 }}
-                className="flex items-start group"
-              >
-                <div className="flex items-center h-5 mt-0.5">
-                  <input 
-                    id="additional-services"
-                    type="checkbox" 
-                    className="w-4 h-4 rounded border border-slate-700 bg-slate-900/50 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-800 text-amber-500 transition-all"
-                  />
-                </div>
-                <div className="ml-3">
-                  <label htmlFor="additional-services" className="text-slate-300 group-hover:text-amber-400 transition-colors">
-                    <span className="block text-sm font-medium">Also inquire about:</span>
-                    <span className="block text-sm text-slate-400 group-hover:text-amber-300 transition-colors">
-                      Visa assistance & flight booking services
-                    </span>
-                  </label>
-                </div>
-              </motion.div>
+              {/* Replaced checkbox with Visa Country Select Dropdown */}
+              <div>
+                <label htmlFor="visa-country" className="block text-slate-300 mb-2">Visa Services Required</label>
+                <select 
+                  id="visa-country" 
+                  className="w-full p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-300"
+                >
+                  <option value="" className="text-slate-500">Select visa services (if needed)</option>
+                  <option value="usa" className="text-slate-300">USA - ₹3,000</option>
+                  <option value="uk" className="text-slate-300">UK - ₹2,000</option>
+                  <option value="schengen" className="text-slate-300">Schengen - ₹1,800</option>
+                  <option value="canada" className="text-slate-300">Canada - ₹2,500</option>
+                  <option value="australia" className="text-slate-300">Australia - ₹2,200</option>
+                  <option value="japan" className="text-slate-300">Japan - ₹1,500</option>
+                  <option value="singapore" className="text-slate-300">Singapore - ₹1,200</option>
+                  <option value="dubai" className="text-slate-300">Dubai/UAE - ₹1,000</option>
+                  <option value="thailand" className="text-slate-300">Thailand - ₹800</option>
+                  <option value="other" className="text-slate-300">Other (please specify in message)</option>
+                </select>
+              </div>
               
               <motion.button 
                 whileHover={{ 

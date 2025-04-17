@@ -19,8 +19,10 @@ import {
   Landmark,
   Heart,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
+  const navigate=useNavigate()
   const [isScrolled, setIsScrolled] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -65,7 +67,7 @@ export default function NavBar() {
     },
     {
       name: "Tour Packages",
-      href: "#tours",
+      href: "tours",
       icon: <CalendarDays className="w-4 h-4" />,
       dropdown: [
         { name: "Adventure Tours", icon: <Compass className="w-4 h-4" /> },
@@ -76,11 +78,11 @@ export default function NavBar() {
     },
     {
       name: "Special Offers",
-      href: "#offers",
+      href: "offers",
       icon: <Star className="w-4 h-4" />,
     },
-    { name: "About Us", href: "#about", icon: <User className="w-4 h-4" /> },
-    { name: "Contact", href: "#contact", icon: <Phone className="w-4 h-4" /> },
+    { name: "About Us", href: "about", icon: <User className="w-4 h-4" /> },
+    { name: "Contact", href: "contact", icon: <Phone className="w-4 h-4" /> },
   ];
 
   const toggleDropdown = (index) => {
@@ -125,6 +127,7 @@ export default function NavBar() {
               className={`text-2xl font-bold tracking-tight ${
                 isScrolled ? "text-gray-800" : "text-white"
               } transition-colors duration-500 ml-2`}
+              onClick={()=>navigate("/")}
             >
               <span className="text-amber-500">Xplore </span>
               <span className="font-light">World</span>
@@ -136,7 +139,7 @@ export default function NavBar() {
             {navLinks.map((link, index) => (
               <div key={index} className="relative group">
                 <motion.button
-                  onClick={() => (link.dropdown ? toggleDropdown(index) : null)}
+                  onClick={() => (link.dropdown ? toggleDropdown(index) : null) }
                   className={`flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${
                     isScrolled
                       ? "text-gray-700 hover:bg-teal-50 hover:text-teal-600"
@@ -184,7 +187,7 @@ export default function NavBar() {
                         {link.dropdown.map((item, i) => (
                           <motion.a
                             key={i}
-                            href="#"
+                            href="/tours"
                             className={`flex items-center px-3 py-2 text-sm rounded-lg transition-colors ${
                               isScrolled
                                 ? "text-gray-600 hover:bg-teal-50 hover:text-teal-600"
