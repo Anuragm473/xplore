@@ -16,7 +16,9 @@ import {
   Heart,
   ChevronRight,
   ChevronLeft,
-  Compass
+  Compass,
+  Plane,
+  Home
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -26,9 +28,11 @@ export default function ToursPage() {
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [selectedDuration, setSelectedDuration] = useState("any");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedRegion, setSelectedRegion] = useState("all");
+  const [selectedContinent, setSelectedContinent] = useState("all");
   const [filteredTours, setFilteredTours] = useState([]);
   const [favoriteItems, setFavoriteItems] = useState([]);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   // Enhanced design system matching the Package component
   const colors = {
@@ -53,6 +57,22 @@ export default function ToursPage() {
     { id: "cultural", name: "Cultural Experiences", icon: <Globe className="w-4 h-4" /> },
   ];
 
+  const regions = [
+    { id: "all", name: "All Regions", icon: <Globe className="w-4 h-4" /> },
+    { id: "domestic", name: "Domestic", icon: <Home className="w-4 h-4" /> },
+    { id: "international", name: "International", icon: <Plane className="w-4 h-4" /> },
+  ];
+
+  const continents = [
+    { id: "all", name: "All Continents" },
+    { id: "asia", name: "Asia" },
+    { id: "europe", name: "Europe" },
+    { id: "northAmerica", name: "North America" },
+    { id: "southAmerica", name: "South America" },
+    { id: "africa", name: "Africa" },
+    { id: "oceania", name: "Oceania" },
+  ];
+
   const durations = [
     { id: "any", name: "Any Duration" },
     { id: "short", name: "1-3 Days" },
@@ -60,13 +80,15 @@ export default function ToursPage() {
     { id: "long", name: "8+ Days" },
   ];
 
-  // Sample tour data
+  // Sample tour data with region and continent information
   const tours = [
     {
       id: 1,
       name: "Santorini Island Hopping",
       location: "Greece",
       category: "beach",
+      region: "international",
+      continent: "europe",
       image: "Santorini.jpg",
       price: 1899,
       duration: 7,
@@ -80,6 +102,8 @@ export default function ToursPage() {
       name: "Kyoto Cultural Tour",
       location: "Japan",
       category: "cultural",
+      region: "international",
+      continent: "asia",
       image: "tokyo.jpg",
       price: 2499,
       duration: 10,
@@ -93,6 +117,8 @@ export default function ToursPage() {
       name: "Bali Wellness Retreat",
       location: "Indonesia",
       category: "beach",
+      region: "international",
+      continent: "asia",
       image: "bali.webp",
       price: 1599,
       duration: 5,
@@ -106,6 +132,8 @@ export default function ToursPage() {
       name: "Machu Picchu Explorer",
       location: "Peru",
       category: "mountain",
+      region: "international",
+      continent: "southAmerica",
       image: "YellowstonePark.jpg",
       price: 2899,
       duration: 9,
@@ -119,6 +147,8 @@ export default function ToursPage() {
       name: "Tokyo Urban Adventure",
       location: "Japan",
       category: "city",
+      region: "international",
+      continent: "asia",
       image: "MiamiBeach.jpg",
       price: 1999,
       duration: 6,
@@ -132,6 +162,8 @@ export default function ToursPage() {
       name: "Swiss Alps Escape",
       location: "Switzerland",
       category: "mountain",
+      region: "international",
+      continent: "europe",
       image: "GrandCanyon.jpg",
       price: 3299,
       duration: 8,
@@ -145,6 +177,8 @@ export default function ToursPage() {
       name: "Amalfi Coast Expedition",
       location: "Italy",
       category: "beach",
+      region: "international",
+      continent: "europe",
       image: "paris.jpg",
       price: 2399,
       duration: 7,
@@ -158,6 +192,8 @@ export default function ToursPage() {
       name: "Marrakech Discover",
       location: "Morocco",
       category: "cultural",
+      region: "international",
+      continent: "africa",
       image: "NewYorkCity.jpg",
       price: 1299,
       duration: 5,
@@ -165,6 +201,66 @@ export default function ToursPage() {
       reviews: 67,
       description: "Navigate the colorful souks and ancient medinas of Morocco.",
       highlights: ["Medina Tour", "Desert Excursion", "Moroccan Cuisine"]
+    },
+    {
+      id: 9,
+      name: "Grand Canyon Adventure",
+      location: "United States",
+      category: "mountain",
+      region: "domestic",
+      continent: "northAmerica",
+      image: "GrandCanyon.jpg",
+      price: 1499,
+      duration: 4,
+      rating: 4.8,
+      reviews: 134,
+      description: "Witness the majesty of one of the world's most spectacular natural wonders.",
+      highlights: ["Scenic Helicopter Tour", "Colorado River Rafting", "Rim Hiking"]
+    },
+    {
+      id: 10,
+      name: "New York City Weekend",
+      location: "United States",
+      category: "city",
+      region: "domestic",
+      continent: "northAmerica",
+      image: "NewYorkCity.jpg",
+      price: 999,
+      duration: 3,
+      rating: 4.6,
+      reviews: 112,
+      description: "Experience the vibrant energy of the Big Apple in a packed weekend itinerary.",
+      highlights: ["Times Square", "Central Park", "Broadway Show"]
+    },
+    {
+      id: 11,
+      name: "Miami Beach Getaway",
+      location: "United States",
+      category: "beach",
+      region: "domestic",
+      continent: "northAmerica",
+      image: "MiamiBeach.jpg",
+      price: 1199,
+      duration: 5,
+      rating: 4.7,
+      reviews: 98,
+      description: "Soak up the sun on pristine beaches and experience the vibrant nightlife.",
+      highlights: ["South Beach", "Art Deco District", "Cuban Cuisine"]
+    },
+    {
+      id: 12,
+      name: "Yellowstone National Park",
+      location: "United States",
+      category: "mountain",
+      region: "domestic",
+      continent: "northAmerica",
+      image: "YellowstonePark.jpg",
+      price: 1699,
+      duration: 6,
+      rating: 4.9,
+      reviews: 145,
+      description: "Discover geysers, wildlife, and breathtaking landscapes in America's first national park.",
+      highlights: ["Old Faithful", "Wildlife Safari", "Grand Prismatic Spring"]
     }
   ];
 
@@ -184,6 +280,16 @@ export default function ToursPage() {
     // Filter by category
     if (selectedCategory !== 'all') {
       results = results.filter(tour => tour.category === selectedCategory);
+    }
+    
+    // Filter by region
+    if (selectedRegion !== 'all') {
+      results = results.filter(tour => tour.region === selectedRegion);
+    }
+
+    // Filter by continent (only if region is international)
+    if (selectedRegion === 'international' && selectedContinent !== 'all') {
+      results = results.filter(tour => tour.continent === selectedContinent);
     }
     
     // Filter by duration
@@ -209,7 +315,7 @@ export default function ToursPage() {
     );
     
     setFilteredTours(results);
-  }, [searchTerm, selectedCategory, selectedDuration, priceRange]);
+  }, [searchTerm, selectedCategory, selectedDuration, selectedRegion, selectedContinent, priceRange]);
 
   const toggleFavorite = (id) => {
     if (favoriteItems.includes(id)) {
@@ -341,66 +447,120 @@ export default function ToursPage() {
                     </button>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Price Range */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="text-sm font-medium text-slate-700 mb-2">Price Range</h4>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-slate-600">{formatPrice(priceRange[0])}</span>
-                        <span className="text-sm text-slate-600">{formatPrice(priceRange[1])}</span>
+                      {/* Price Range */}
+                      <div className="mb-6">
+                        <h4 className="text-sm font-medium text-slate-700 mb-2">Price Range</h4>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm text-slate-600">{formatPrice(priceRange[0])}</span>
+                          <span className="text-sm text-slate-600">{formatPrice(priceRange[1])}</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max="5000"
+                          step="100"
+                          value={priceRange[1]}
+                          onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                          className="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer accent-amber-500"
+                        />
                       </div>
-                      <input
-                        type="range"
-                        min="0"
-                        max="5000"
-                        step="100"
-                        value={priceRange[1]}
-                        onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                        className="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer accent-amber-500"
-                      />
+                      
+                      {/* Duration */}
+                      <div className="mb-6">
+                        <h4 className="text-sm font-medium text-slate-700 mb-2">Duration</h4>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                          {durations.map((duration) => (
+                            <button
+                              key={duration.id}
+                              className={`py-2 px-3 text-sm rounded-md transition-colors ${
+                                selectedDuration === duration.id
+                                  ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white font-medium"
+                                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                              }`}
+                              onClick={() => setSelectedDuration(duration.id)}
+                            >
+                              {duration.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                     
-                    {/* Duration */}
                     <div>
-                      <h4 className="text-sm font-medium text-slate-700 mb-2">Duration</h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        {durations.map((duration) => (
-                          <button
-                            key={duration.id}
-                            className={`py-2 px-3 text-sm rounded-md transition-colors ${
-                              selectedDuration === duration.id
-                                ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white font-medium"
-                                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                            }`}
-                            onClick={() => setSelectedDuration(duration.id)}
-                          >
-                            {duration.name}
-                          </button>
-                        ))}
+                      {/* Regions */}
+                      <div className="mb-6">
+                        <h4 className="text-sm font-medium text-slate-700 mb-2">Region</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {regions.map((region) => (
+                            <button
+                              key={region.id}
+                              className={`flex items-center py-1.5 px-3 text-sm rounded-md transition-colors ${
+                                selectedRegion === region.id
+                                  ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium"
+                                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                              }`}
+                              onClick={() => {
+                                setSelectedRegion(region.id);
+                                if (region.id !== 'international') {
+                                  setSelectedContinent('all');
+                                }
+                              }}
+                            >
+                              <span className={`mr-1.5 ${selectedRegion === region.id ? "text-white" : "text-amber-500"}`}>
+                                {region.icon}
+                              </span>
+                              {region.name}
+                            </button>
+                          ))}
+                        </div>
                       </div>
+                      
+                      {/* Continents - Only show if International is selected */}
+                      {selectedRegion === 'international' && (
+                        <div className="mb-6">
+                          <h4 className="text-sm font-medium text-slate-700 mb-2">Continent</h4>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            {continents.map((continent) => (
+                              <button
+                                key={continent.id}
+                                className={`py-2 px-3 text-sm rounded-md transition-colors ${
+                                  selectedContinent === continent.id
+                                    ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium"
+                                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                                }`}
+                                onClick={() => setSelectedContinent(continent.id)}
+                              >
+                                {continent.name}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    
-                    {/* Categories */}
-                    <div>
-                      <h4 className="text-sm font-medium text-slate-700 mb-2">Tour Type</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {categories.map((category) => (
-                          <button
-                            key={category.id}
-                            className={`flex items-center py-1.5 px-3 text-sm rounded-md transition-colors ${
-                              selectedCategory === category.id
-                                ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium"
-                                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                            }`}
-                            onClick={() => setSelectedCategory(category.id)}
-                          >
-                            <span className={`mr-1.5 ${selectedCategory === category.id ? "text-white" : "text-amber-500"}`}>
-                              {category.icon}
-                            </span>
-                            {category.name}
-                          </button>
-                        ))}
-                      </div>
+                  </div>
+                  
+                  {/* Categories */}
+                  <div>
+                    <h4 className="text-sm font-medium text-slate-700 mb-2">Tour Type</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {categories.map((category) => (
+                        <button
+                          key={category.id}
+                          className={`flex items-center py-1.5 px-3 text-sm rounded-md transition-colors ${
+                            selectedCategory === category.id
+                              ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white font-medium"
+                              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                          }`}
+                          onClick={() => setSelectedCategory(category.id)}
+                        >
+                          <span className={`mr-1.5 ${selectedCategory === category.id ? "text-white" : "text-teal-500"}`}>
+                            {category.icon}
+                          </span>
+                          {category.name}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -408,7 +568,59 @@ export default function ToursPage() {
             )}
           </AnimatePresence>
     
-          {/* Category Tabs - Quick Filters */}
+          {/* Region Tabs - Quick Filters */}
+          <div className="flex overflow-x-auto mb-6 pb-2 no-scrollbar">
+            <div className="flex gap-2">
+              {regions.map((region) => (
+                <motion.button
+                  key={region.id}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`flex items-center py-2 px-4 rounded-full whitespace-nowrap transition-colors flex-shrink-0 ${
+                    selectedRegion === region.id
+                      ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg shadow-amber-500/30"
+                      : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                  }`}
+                  onClick={() => {
+                    setSelectedRegion(region.id);
+                    if (region.id !== 'international') {
+                      setSelectedContinent('all');
+                    }
+                  }}
+                >
+                  <span className={`mr-2 ${selectedRegion === region.id ? "text-white" : "text-amber-500"}`}>
+                    {region.icon}
+                  </span>
+                  {region.name}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Continent Tabs - Only show if International is selected */}
+          {selectedRegion === 'international' && (
+            <div className="flex overflow-x-auto mb-10 pb-2 no-scrollbar">
+              <div className="flex gap-2">
+                {continents.map((continent) => (
+                  <motion.button
+                    key={continent.id}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`py-2 px-4 rounded-full whitespace-nowrap transition-colors flex-shrink-0 ${
+                      selectedContinent === continent.id
+                        ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30"
+                        : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                    }`}
+                    onClick={() => setSelectedContinent(continent.id)}
+                  >
+                    {continent.name}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Category Tabs */}
           <div className="flex overflow-x-auto mb-10 pb-2 no-scrollbar">
             <div className="flex gap-2">
               {categories.map((category) => (
@@ -418,12 +630,12 @@ export default function ToursPage() {
                   whileTap={{ scale: 0.95 }}
                   className={`flex items-center py-2 px-4 rounded-full whitespace-nowrap transition-colors flex-shrink-0 ${
                     selectedCategory === category.id
-                      ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg shadow-amber-500/30"
+                      ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-lg shadow-teal-500/30"
                       : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
                   }`}
                   onClick={() => setSelectedCategory(category.id)}
                 >
-                  <span className={`mr-2 ${selectedCategory === category.id ? "text-white" : "text-amber-500"}`}>
+                  <span className={`mr-2 ${selectedCategory === category.id ? "text-white" : "text-teal-500"}`}>
                     {category.icon}
                   </span>
                   {category.name}
@@ -478,150 +690,190 @@ export default function ToursPage() {
                         alt={tour.name}
                         className="w-full h-48 object-cover"
                       />
+                      {/* Region Badge */}
+                      <div className="absolute top-4 left-4 z-10">
+                        <span className={`inline-flex items-center py-1 px-2 rounded-full text-xs font-medium ${
+                          tour.region === 'domestic' 
+                            ? 'bg-blue-100 text-blue-800'
+                            : 'bg-amber-100 text-amber-800'
+                        }`}>
+                          {tour.region === 'domestic' ? (
+                            <><Home className="w-3 h-3 mr-1" />Domestic</>
+                          ) : (
+                            <><Plane className="w-3 h-3 mr-1" />International</>
+                          )}
+                        </span>
+                      </div>
+                      
+                      {/* Price Tag */}
+                      <div className="absolute top-4 right-4 z-10">
+                        <span className="bg-white/90 text-slate-800 py-1 px-3 rounded-full text-sm font-semibold shadow-sm backdrop-blur-sm">
+                          {formatPrice(tour.price)}
+                        </span>
+                      </div>
+                      
                       {/* Favorite Button */}
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                      <button
                         onClick={() => toggleFavorite(tour.id)}
-                        className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-white/70 backdrop-blur-sm rounded-full"
+                        className="absolute right-4 top-[190px] z-10 bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform duration-300"
                       >
-                        <Heart 
-                          className={`w-5 h-5 transition-colors ${
-                            favoriteItems.includes(tour.id) 
-                              ? 'fill-amber-500 text-amber-500' 
-                              : 'text-slate-400 group-hover:text-amber-400'
+                        <Heart
+                          className={`w-5 h-5 ${
+                            favoriteItems.includes(tour.id)
+                              ? "fill-pink-500 text-pink-500"
+                              : "text-slate-400"
                           }`}
                         />
-                      </motion.button>
-                      <div className="absolute bottom-0 left-0 bg-gradient-to-t from-white/80 to-transparent w-full pt-10 pb-3 px-4">
-                        <div className="flex items-center">
-                          <MapPin className="w-4 h-4 text-amber-500 mr-1" />
-                          <span className="text-sm text-slate-700 font-medium">{tour.location}</span>
-                        </div>
-                      </div>
+                      </button>
                     </div>
-                    
+    
                     <div className="p-6">
-                      <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-xl font-bold text-slate-800">{tour.name}</h3>
-                        {tour.rating && (
-                          <div className="flex items-center bg-slate-100 px-2 py-1 rounded-full">
-                            <Star className="w-4 h-4 text-amber-400 fill-amber-400 mr-1" />
-                            <span className={`${typography.small} text-slate-700`}>{tour.rating}</span>
-                          </div>
-                        )}
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-bold text-lg text-slate-800 group-hover:text-teal-600 transition-colors">
+                          {tour.name}
+                        </h3>
                       </div>
                       
-                      <p className={`${typography.small} text-slate-600 mb-4 line-clamp-2`}>{tour.description}</p>
+                      <div className="flex items-center mb-3 text-slate-500">
+                        <MapPin className="w-4 h-4 mr-1 text-slate-400" />
+                        <span className="text-sm">{tour.location}</span>
+                      </div>
+                      
+                      <p className="text-slate-600 text-sm mb-4 line-clamp-2">
+                        {tour.description}
+                      </p>
                       
                       <div className="flex flex-wrap gap-2 mb-5">
-                        {tour.highlights?.slice(0, 3).map((highlight) => (
+                        {tour.highlights.map((highlight, idx) => (
                           <span 
-                            key={highlight}
-                            className="inline-block px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs border border-slate-200"
+                            key={idx}
+                            className="bg-slate-100 text-slate-700 text-xs rounded-full px-2 py-1"
                           >
                             {highlight}
                           </span>
                         ))}
                       </div>
                       
-                      <div className="flex justify-between items-center mb-5">
-                        <div className="flex items-center text-slate-600">
-                          <Calendar className="w-5 h-5 mr-2 text-amber-500" />
-                          <span className={`${typography.small}`}>{tour.duration} days</span>
+                      <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                        <div className="flex items-center">
+                          <Star className="w-4 h-4 text-amber-400" />
+                          <span className="ml-1 text-sm font-medium text-slate-700">
+                            {tour.rating}
+                          </span>
+                          <span className="ml-1 text-xs text-slate-500">
+                            ({tour.reviews} reviews)
+                          </span>
                         </div>
-                        <div className="flex flex-col items-end">
-                          <span className={`${typography.small} text-slate-500`}>from</span>
-                          <span className="font-bold text-amber-500 text-xl">{formatPrice(tour.price)}</span>
+                        
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 text-slate-400 mr-1" />
+                          <span className="text-sm text-slate-600">{tour.duration} days</span>
                         </div>
                       </div>
                       
                       <motion.button
-                        whileHover={{ 
-                          scale: 1.02,
-                          boxShadow: `0 0 15px ${colors.primary}40`
-                        }}
-                        onClick={()=>{navigate("/tours/tour")}}
+                        whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-medium rounded-lg transition-all duration-300 flex items-center justify-center group"
+                        onClick={() => navigate(`/tour/${tour.id}`)}
+                        className="w-full mt-5 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-lg flex items-center justify-center font-medium transition-all duration-300"
                       >
-                        <span>View Details</span>
-                        <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                        View Details
+                        <ChevronRight className="w-4 h-4 ml-1" />
                       </motion.button>
                     </div>
                   </motion.div>
                 ))}
               </div>
             )}
-          </div>
-    
-          {/* Pagination */}
-          <div className="mt-16 flex justify-center">
-            <div className="flex items-center space-x-2">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 rounded-lg bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 flex items-center"
-              >
-                <ChevronLeft className="w-4 h-4 mr-1" />
-                Previous
-              </motion.button>
-              
-              {[1, 2, 3].map((page) => (
-                <motion.button
-                  key={page}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors ${
-                    page === 1
-                      ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-lg shadow-teal-500/20"
-                      : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-                  }`}
-                >
-                  {page}
-                </motion.button>
-              ))}
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 rounded-lg bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 flex items-center"
-              >
-                Next
-                <ChevronRight className="w-4 h-4 ml-1" />
-              </motion.button>
-            </div>
-          </div>
-          
-          {/* Enhanced View All Button */}
-          <div className="flex justify-center mt-12">
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              whileHover={{ 
-                scale: 1.05,
-                boxShadow: `0 0 20px ${colors.secondary}40`
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-full font-medium hover:from-teal-600 hover:to-teal-700 transition-all duration-300 flex items-center shadow-lg shadow-teal-500/20"
-            >
-              Explore All Destinations
-              <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </motion.button>
+            
+            {/* Pagination */}
+            {filteredTours.length > 0 && (
+              <div className="flex justify-center mt-12">
+                <div className="flex items-center space-x-2">
+                  <button className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors">
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button className="w-10 h-10 rounded-full flex items-center justify-center bg-amber-500 text-white font-medium">
+                    1
+                  </button>
+                  <button className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors">
+                    2
+                  </button>
+                  <button className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors">
+                    3
+                  </button>
+                  <span className="text-slate-400">...</span>
+                  <button className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors">
+                    8
+                  </button>
+                  <button className="w-10 h-10 rounded-full flex items-center justify-center border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors">
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         
-        {/* Add this to your global CSS */}
-        <style jsx global>{`
-          .no-scrollbar::-webkit-scrollbar {
-            display: none;
-          }
-          .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-        `}</style>
+        {/* Footer Section */}
+        <footer className="bg-slate-800 text-white py-12 mt-20">
+          <div className="container mx-auto max-w-6xl px-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div>
+                <h3 className="text-xl font-bold mb-4">Travel Explorer</h3>
+                <p className="text-slate-300 mb-6">
+                  Discover the world with our carefully curated tours and travel experiences.
+                </p>
+                <div className="flex space-x-4">
+                  <a href="#" className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center hover:bg-amber-500 transition-colors">
+                    <span className="sr-only">Facebook</span>
+                    {/* Facebook icon would go here */}
+                  </a>
+                  <a href="#" className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center hover:bg-amber-500 transition-colors">
+                    <span className="sr-only">Twitter</span>
+                    {/* Twitter icon would go here */}
+                  </a>
+                  <a href="#" className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center hover:bg-amber-500 transition-colors">
+                    <span className="sr-only">Instagram</span>
+                    {/* Instagram icon would go here */}
+                  </a>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">Home</a></li>
+                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">Tours</a></li>
+                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">Destinations</a></li>
+                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">About Us</a></li>
+                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">Contact</a></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-bold mb-4">Newsletter</h3>
+                <p className="text-slate-300 mb-4">
+                  Subscribe to our newsletter for travel tips and exclusive offers.
+                </p>
+                <div className="flex">
+                  <input
+                    type="email"
+                    placeholder="Your email"
+                    className="bg-slate-700 text-white px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-amber-500/50 w-full"
+                  />
+                  <button className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-r-lg transition-colors">
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div className="border-t border-slate-700 mt-12 pt-8 text-center text-slate-400 text-sm">
+              <p>&copy; {new Date().getFullYear()} Travel Explorer. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
       </div>
-    );
+  );
 }
