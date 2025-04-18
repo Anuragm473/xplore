@@ -14,31 +14,31 @@ export default function FAQ() {
         { 
             question: 'How do I book a tour package?', 
             answer: 'Booking is simple! Browse our packages, select your preferred one, click "Book Now", fill in your details, and complete the payment process. You\'ll receive a confirmation email with all details.',
-            icon: <Globe className="w-5 h-5 text-amber-500" />
+            icon: <Globe className="w-5 h-5 text-amber-600" />
         },
         { 
             question: 'What is your cancellation policy?', 
             answer: 'We offer free cancellation up to 30 days before your trip. Cancellations made 15-29 days prior receive a 50% refund. Cancellations less than 15 days before departure are non-refundable.',
-            icon: <Shield className="w-5 h-5 text-amber-500" />
+            icon: <Shield className="w-5 h-5 text-amber-600" />
         },
         { 
             question: 'Are flights included in the packages?', 
             answer: 'International packages include round-trip flights from major cities. Local packages do not include flights unless specifically mentioned in the package details.',
-            icon: <Calendar className="w-5 h-5 text-amber-500" />
+            icon: <Calendar className="w-5 h-5 text-amber-600" />
         },
         { 
             question: 'Do you offer customized tour packages?', 
             answer: 'Yes! We specialize in creating custom itineraries. Contact us through the form or call us directly to discuss your dream vacation and we\'ll design a personalized experience.',
-            icon: <PenTool className="w-5 h-5 text-amber-500" />
+            icon: <PenTool className="w-5 h-5 text-amber-600" />
         }
     ];
 
     // Design system constants
     const colors = {
-        primary: '#F59E0B',    // Amber-500
+        primary: '#D97706',    // Amber-600
         secondary: '#0F766E',  // Teal-600
-        background: '#1E293B', // Slate-800
-        text: '#F8FAFC'        // Slate-50
+        background: '#F9FAFB', // Gray-50
+        text: '#1F2937'        // Gray-800
     };
 
     const typography = {
@@ -48,7 +48,7 @@ export default function FAQ() {
     };
 
     return (
-        <section className="relative py-20 bg-gradient-to-b from-slate-900 to-slate-800 overflow-hidden">
+        <section className="relative py-20 bg-gradient-to-b from-gray-50 to-gray-100 overflow-hidden">
             {/* Decorative elements */}
             <motion.div 
                 initial={{ opacity: 0 }}
@@ -71,13 +71,13 @@ export default function FAQ() {
                     viewport={{ once: true }}
                     className="text-center mb-16"
                 >
-                    <div className="inline-flex items-center mb-6 bg-slate-800/50 px-5 py-3 rounded-full backdrop-blur-sm border border-slate-700/50">
-                        <HelpCircle className="w-5 h-5 text-amber-500 mr-2" />
-                        <span className={`${typography.small} text-slate-300`}>NEED HELP?</span>
+                    <div className="inline-flex items-center mb-6 bg-white/70 px-5 py-3 rounded-full backdrop-blur-sm border border-gray-200">
+                        <HelpCircle className="w-5 h-5 text-amber-600 mr-2" />
+                        <span className={`${typography.small} text-gray-600`}>NEED HELP?</span>
                     </div>
                     
-                    <h2 className={`${typography.h2} text-slate-50 mb-4`}>
-                        Frequently Asked <span className="bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">Questions</span>
+                    <h2 className={`${typography.h2} text-gray-800 mb-4`}>
+                        Frequently Asked <span className="bg-gradient-to-r from-amber-500 to-amber-700 bg-clip-text text-transparent">Questions</span>
                     </h2>
                     
                     <motion.p
@@ -85,7 +85,7 @@ export default function FAQ() {
                         whileInView={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
                         viewport={{ once: true }}
-                        className={`${typography.body} text-slate-300 max-w-2xl mx-auto`}
+                        className={`${typography.body} text-gray-600 max-w-2xl mx-auto`}
                     >
                         Get answers to common questions about our tours and booking process.
                     </motion.p>
@@ -117,17 +117,17 @@ export default function FAQ() {
                             
                             <motion.div
                                 whileHover={{ y: -2 }}
-                                className={`bg-slate-800/50 backdrop-blur-sm rounded-xl border ${activeFaq === index ? 'border-amber-500/50' : 'border-slate-700/50'} overflow-hidden shadow-lg`}
+                                className={`bg-white backdrop-blur-sm rounded-xl border ${activeFaq === index ? 'border-amber-500/50' : 'border-gray-200'} overflow-hidden shadow-md`}
                             >
                                 <button 
                                     onClick={() => toggleFaq(index)}
                                     className="w-full p-6 text-left flex items-center justify-between font-medium group"
                                 >
                                     <div className="flex items-center">
-                                        <div className="w-10 h-10 rounded-full bg-slate-900/50 flex items-center justify-center mr-4 border border-slate-700/50">
+                                        <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center mr-4 border border-amber-100">
                                             {faq.icon}
                                         </div>
-                                        <span className={`text-left text-slate-50 group-hover:text-amber-400 transition-colors ${activeFaq === index ? 'text-amber-500' : ''}`}>
+                                        <span className={`text-left text-gray-800 group-hover:text-amber-600 transition-colors ${activeFaq === index ? 'text-amber-600' : ''}`}>
                                             {faq.question}
                                         </span>
                                     </div>
@@ -156,7 +156,7 @@ export default function FAQ() {
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: activeFaq === index ? 1 : 0 }}
                                             transition={{ delay: 0.2 }}
-                                            className={`${typography.body} text-slate-300 border-t border-slate-700/50 pt-4`}
+                                            className={`${typography.body} text-gray-600 border-t border-gray-200 pt-4`}
                                         >
                                             {faq.answer}
                                         </motion.p>
@@ -175,7 +175,7 @@ export default function FAQ() {
                     viewport={{ once: true }}
                     className="mt-16 text-center"
                 >
-                    <p className={`${typography.body} text-slate-300 mb-6`}>
+                    <p className={`${typography.body} text-gray-600 mb-6`}>
                         Still have questions? Our travel experts are here to help!
                     </p>
                     <motion.button
@@ -184,7 +184,7 @@ export default function FAQ() {
                             boxShadow: `0 0 20px ${colors.primary}40`
                         }}
                         whileTap={{ scale: 0.95 }}
-                        className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 rounded-full font-medium hover:from-amber-600 hover:to-amber-700 transition-all duration-300 flex items-center mx-auto"
+                        className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-full font-medium hover:from-amber-600 hover:to-amber-700 transition-all duration-300 flex items-center mx-auto"
                     >
                         Contact Our Team
                         <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />

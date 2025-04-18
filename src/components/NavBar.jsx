@@ -5,24 +5,22 @@ import {
   X,
   Globe,
   User,
-  CalendarDays,
   MapPin,
   Phone,
   Search,
   ChevronDown,
   Luggage,
   Mountain,
-  Hotel,
   Star,
   Compass,
   Plane,
   Landmark,
-  Heart,
 } from "lucide-react";
+import { CalendarDays, Home, Building } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -43,26 +41,25 @@ export default function NavBar() {
       icon: <MapPin className="w-4 h-4" />,
       dropdown: [
         {
-          name: "Beach Getaways",
-          icon: (
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
-          ),
+          name: "Domestic",
+          icon: <Home className="w-4 h-4" />,
+          submenu: [
+            { name: "Beach Getaways", icon: <Compass className="w-4 h-4" /> },
+            { name: "Mountain Retreats", icon: <Mountain className="w-4 h-4" /> },
+            { name: "City Explorations", icon: <Building className="w-4 h-4" /> },
+            { name: "Cultural Hotspots", icon: <Landmark className="w-4 h-4" /> },
+          ]
         },
-        { name: "Mountain Retreats", icon: <Mountain className="w-4 h-4" /> },
-        { name: "City Explorations", icon: <Landmark className="w-4 h-4" /> },
-        { name: "Luxury Escapes", icon: <Star className="w-4 h-4" /> },
+        {
+          name: "International",
+          icon: <Plane className="w-4 h-4" />,
+          submenu: [
+            { name: "Exotic Islands", icon: <Compass className="w-4 h-4" /> },
+            { name: "Global Wonders", icon: <Globe className="w-4 h-4" /> },
+            { name: "Luxury Escapes", icon: <Star className="w-4 h-4" /> },
+            { name: "Adventure Destinations", icon: <Mountain className="w-4 h-4" /> },
+          ]
+        }
       ],
     },
     {
@@ -70,10 +67,13 @@ export default function NavBar() {
       href: "tours",
       icon: <CalendarDays className="w-4 h-4" />,
       dropdown: [
-        { name: "Adventure Tours", icon: <Compass className="w-4 h-4" /> },
-        { name: "Cultural Experiences", icon: <Globe className="w-4 h-4" /> },
-        { name: "Family Vacations", icon: <User className="w-4 h-4" /> },
-        { name: "Honeymoon Packages", icon: <Heart className="w-4 h-4" /> },
+        { name: "Asia", icon: <Globe className="w-4 h-4" /> },
+        { name: "Europe", icon: <Globe className="w-4 h-4" /> },
+        { name: "North America", icon: <Globe className="w-4 h-4" /> },
+        { name: "South America", icon: <Globe className="w-4 h-4" /> },
+        { name: "Africa", icon: <Globe className="w-4 h-4" /> },
+        { name: "Australia & Oceania", icon: <Globe className="w-4 h-4" /> },
+        { name: "Antarctica", icon: <Globe className="w-4 h-4" /> },
       ],
     },
     {
@@ -81,8 +81,16 @@ export default function NavBar() {
       href: "offers",
       icon: <Star className="w-4 h-4" />,
     },
-    { name: "About Us", href: "about", icon: <User className="w-4 h-4" /> },
-    { name: "Contact", href: "contact", icon: <Phone className="w-4 h-4" /> },
+    { 
+      name: "About Us", 
+      href: "about", 
+      icon: <User className="w-4 h-4" /> 
+    },
+    { 
+      name: "Contact", 
+      href: "contact", 
+      icon: <Phone className="w-4 h-4" /> 
+    },
   ];
 
   const toggleDropdown = (index) => {
@@ -93,8 +101,8 @@ export default function NavBar() {
     <header
       className={`fixed w-full z-50 transition-all duration-500 ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-lg shadow-xl py-2 border-b border-gray-100"
-          : "bg-transparent py-4"
+          ? "bg-white shadow-md py-2 border-b border-gray-100"
+          : "bg-sky-50 py-4"
       }`}
     >
       <div className="container mx-auto px-4 lg:px-8">
@@ -112,24 +120,24 @@ export default function NavBar() {
             >
               <Globe
                 className={`absolute transition-all duration-500 group-hover:opacity-0 group-hover:scale-90 ${
-                  isScrolled ? "text-teal-600" : "text-white"
+                  isScrolled ? "text-blue-600" : "text-blue-700"
                 }`}
                 size={isScrolled ? 28 : 32}
               />
               <Luggage
                 className={`absolute transition-all duration-500 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 ${
-                  isScrolled ? "text-amber-500" : "text-amber-300"
+                  isScrolled ? "text-orange-500" : "text-orange-600"
                 }`}
                 size={isScrolled ? 28 : 32}
               />
             </div>
             <span
               className={`text-2xl font-bold tracking-tight ${
-                isScrolled ? "text-gray-800" : "text-white"
+                isScrolled ? "text-gray-800" : "text-gray-900"
               } transition-colors duration-500 ml-2`}
-              onClick={()=>navigate("/")}
+              onClick={() => navigate("/")}
             >
-              <span className="text-amber-500">Xplore </span>
+              <span className="text-orange-500">Xplore </span>
               <span className="font-light">World</span>
             </span>
           </motion.a>
@@ -139,11 +147,11 @@ export default function NavBar() {
             {navLinks.map((link, index) => (
               <div key={index} className="relative group">
                 <motion.button
-                  onClick={() => (link.dropdown ? toggleDropdown(index) : null) }
+                  onClick={() => (link.dropdown ? toggleDropdown(index) : null)}
                   className={`flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${
                     isScrolled
-                      ? "text-gray-700 hover:bg-teal-50 hover:text-teal-600"
-                      : "text-white hover:bg-white/10 hover:text-amber-300"
+                      ? "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                      : "text-gray-800 hover:bg-blue-100/50 hover:text-blue-700"
                   }`}
                   whileHover={{ scale: 1.05 }}
                 >
@@ -160,10 +168,10 @@ export default function NavBar() {
 
                 {link.dropdown && (
                   <motion.div
-                    className={`absolute left-0 mt-2 w-64 rounded-xl shadow-2xl overflow-hidden ${
+                    className={`absolute left-0 mt-2 w-64 rounded-xl shadow-lg overflow-hidden ${
                       isScrolled
                         ? "bg-white border border-gray-100"
-                        : "bg-slate-800 border border-slate-700"
+                        : "bg-white border border-blue-100"
                     }`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{
@@ -178,7 +186,7 @@ export default function NavBar() {
                     <div className="p-4">
                       <h4
                         className={`text-sm font-semibold mb-2 ${
-                          isScrolled ? "text-teal-600" : "text-amber-400"
+                          isScrolled ? "text-blue-600" : "text-blue-700"
                         }`}
                       >
                         Explore {link.name}
@@ -190,12 +198,12 @@ export default function NavBar() {
                             href="/tours"
                             className={`flex items-center px-3 py-2 text-sm rounded-lg transition-colors ${
                               isScrolled
-                                ? "text-gray-600 hover:bg-teal-50 hover:text-teal-600"
-                                : "text-slate-300 hover:bg-slate-700 hover:text-white"
+                                ? "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                                : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
                             }`}
                             whileHover={{ x: 5 }}
                           >
-                            <span className="mr-3">{item.icon}</span>
+                            <span className="mr-3 text-blue-500">{item.icon}</span>
                             {item.name}
                           </motion.a>
                         ))}
@@ -211,9 +219,9 @@ export default function NavBar() {
           <div className="hidden lg:flex items-center space-x-4">
             <motion.div
               className={`relative transition-all duration-300 ${
-                isScrolled ? "bg-gray-100" : "bg-white/20"
+                isScrolled ? "bg-gray-100" : "bg-white/80"
               } rounded-full group ${
-                searchFocused ? "ring-2 ring-amber-400" : ""
+                searchFocused ? "ring-2 ring-blue-400" : ""
               }`}
               whileHover={{ scale: 1.05 }}
             >
@@ -223,7 +231,7 @@ export default function NavBar() {
                 className={`py-2 pl-10 pr-4 rounded-full text-sm focus:outline-none ${
                   isScrolled
                     ? "bg-gray-100 placeholder-gray-500"
-                    : "bg-transparent text-white placeholder-white/70"
+                    : "bg-transparent text-gray-800 placeholder-gray-500"
                 } w-48 transition-all duration-300`}
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setSearchFocused(false)}
@@ -231,8 +239,8 @@ export default function NavBar() {
               <Search
                 className={`absolute left-3 top-2.5 w-4 h-4 transition-colors ${
                   isScrolled
-                    ? "text-gray-500 group-hover:text-teal-600"
-                    : "text-white"
+                    ? "text-gray-500 group-hover:text-blue-600"
+                    : "text-gray-500 group-hover:text-blue-600"
                 }`}
               />
             </motion.div>
@@ -240,8 +248,8 @@ export default function NavBar() {
             <motion.button
               className={`flex items-center ${
                 isScrolled
-                  ? "bg-transparent text-teal-600 hover:bg-teal-600/10"
-                  : "bg-transparent text-white hover:bg-white/10"
+                  ? "bg-transparent text-blue-600 hover:bg-blue-600/10"
+                  : "bg-transparent text-blue-700 hover:bg-blue-100"
               } rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 hover:shadow-sm`}
               whileHover={{ scale: 1.05 }}
             >
@@ -249,7 +257,7 @@ export default function NavBar() {
               Sign In
             </motion.button>
             <motion.button
-              className="flex items-center bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-full px-5 py-2.5 text-sm font-medium hover:shadow-lg hover:shadow-amber-500/30 transition-all duration-300 group"
+              className="flex items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full px-5 py-2.5 text-sm font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -263,7 +271,7 @@ export default function NavBar() {
 
           {/* Mobile Menu Button with Animation */}
           <motion.button
-            className="lg:hidden p-2 rounded-full focus:outline-none transition-all hover:bg-white/10"
+            className="lg:hidden p-2 rounded-full focus:outline-none transition-all hover:bg-blue-100/50"
             onClick={() => setNavbarOpen(!navbarOpen)}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -271,13 +279,13 @@ export default function NavBar() {
             {navbarOpen ? (
               <X
                 className={`w-6 h-6 ${
-                  isScrolled ? "text-gray-800" : "text-white"
+                  isScrolled ? "text-gray-800" : "text-gray-900"
                 } transition-transform duration-300`}
               />
             ) : (
               <Menu
                 className={`w-6 h-6 ${
-                  isScrolled ? "text-gray-800" : "text-white"
+                  isScrolled ? "text-gray-800" : "text-gray-900"
                 } transition-transform duration-300`}
               />
             )}
@@ -295,7 +303,7 @@ export default function NavBar() {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="bg-gradient-to-b from-slate-800 to-slate-900 shadow-2xl">
+            <div className="bg-gradient-to-b from-blue-50 to-white shadow-lg">
               <div className="container mx-auto px-6 py-6">
                 {/* Mobile Search */}
                 <motion.div
@@ -307,9 +315,9 @@ export default function NavBar() {
                   <input
                     type="text"
                     placeholder="Search destinations..."
-                    className="w-full py-3 pl-10 pr-4 rounded-full bg-slate-700/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all duration-300"
+                    className="w-full py-3 pl-10 pr-4 rounded-full bg-white/80 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
                   />
-                  <Search className="absolute left-3 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-amber-400 transition-colors" />
+                  <Search className="absolute left-3 top-3.5 w-4 h-4 text-gray-500 group-focus-within:text-blue-500 transition-colors" />
                 </motion.div>
 
                 <nav className="flex flex-col space-y-2">
@@ -326,10 +334,10 @@ export default function NavBar() {
                             ? toggleDropdown(index)
                             : setNavbarOpen(false)
                         }
-                        className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-white hover:bg-slate-700/50 transition-colors"
+                        className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-gray-800 hover:bg-blue-50 transition-colors"
                       >
                         <div className="flex items-center">
-                          <span className="mr-3 text-amber-400">
+                          <span className="mr-3 text-blue-600">
                             {link.icon}
                           </span>
                           <span className="font-medium">{link.name}</span>
@@ -355,13 +363,13 @@ export default function NavBar() {
                             <motion.a
                               key={i}
                               href="#"
-                              className="flex items-center px-3 py-2 text-sm rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors"
+                              className="flex items-center px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
                               onClick={() => setNavbarOpen(false)}
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 0.1 + i * 0.05 }}
                             >
-                              <span className="mr-3 text-amber-400/80">
+                              <span className="mr-3 text-blue-500">
                                 {item.icon}
                               </span>
                               {item.name}
@@ -374,13 +382,13 @@ export default function NavBar() {
                 </nav>
 
                 <motion.div
-                  className="pt-6 mt-4 border-t border-slate-700/50 flex flex-col space-y-3"
+                  className="pt-6 mt-4 border-t border-gray-200 flex flex-col space-y-3"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
                   <motion.button
-                    className="flex items-center justify-center border border-amber-400 text-amber-400 rounded-full px-4 py-3 text-sm font-medium hover:bg-amber-400/10 transition-colors"
+                    className="flex items-center justify-center border border-blue-500 text-blue-600 rounded-full px-4 py-3 text-sm font-medium hover:bg-blue-50 transition-colors"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -388,7 +396,7 @@ export default function NavBar() {
                     Sign In
                   </motion.button>
                   <motion.button
-                    className="flex items-center justify-center bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-full px-4 py-3 text-sm font-medium hover:shadow-lg hover:shadow-amber-500/30 transition-all"
+                    className="flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full px-4 py-3 text-sm font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
