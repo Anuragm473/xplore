@@ -16,21 +16,22 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
-      },
-      {
-        path: "tours",
-        element: <ToursPage />,
-      },
-      {
-        path: "tours/tour",
-        element: <TourDetailsPage />,
-      },
-      {
-        path: "visa",
-        element: <VisaSelectionPage/>,
       }
-    ],
-  },
+    //   {
+    //     path: "tours",
+    //     element: <ToursPage />,
+    //   },
+    //   {
+    //     path: "tours/tour",
+    //     element: <TourDetailsPage />,
+    //   },
+    //   {
+    //     path: "visa",
+    //     element: <VisaSelectionPage/>,
+    //   }
+    // ],
+    ]
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

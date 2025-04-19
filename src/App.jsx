@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import NavBar from "./components/NavBar";
+import HomePage from "./Pages/HomePage";
 
 export default function AppLayout() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -36,7 +37,7 @@ export default function AppLayout() {
         <NavBar isScrolled={isScrolled} navLinks={navLinks} navbarOpen={navbarOpen} />
       </header>
       <main>
-        <Outlet />
+        <HomePage setIsScrolled={setIsScrolled}/>
       </main>
     </div>
   );

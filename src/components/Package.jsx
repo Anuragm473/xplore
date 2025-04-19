@@ -161,6 +161,7 @@ export default function Package({ activeTab, setActiveTab, packages, activeSlide
                     boxShadow: `0 0 15px ${colors.primary}40`
                   }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={()=>window.location.href='#contact'}
                   className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-medium rounded-lg transition-all duration-300 flex items-center justify-center group"
                 >
                   <span>Book Now</span>
@@ -171,7 +172,7 @@ export default function Package({ activeTab, setActiveTab, packages, activeSlide
           ))}
         </div>
         
-        {/* Enhanced View All Button */}
+        {/* Enhanced View All Button
         <div className="flex justify-center">
           <motion.button
             initial={{ opacity: 0 }}
@@ -187,7 +188,7 @@ export default function Package({ activeTab, setActiveTab, packages, activeSlide
             View All Packages 
             <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
           </motion.button>
-        </div>
+        </div> */}
   
         {/* Floating decorative elements */}
         <motion.div 

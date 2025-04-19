@@ -11,7 +11,7 @@ import Contact from './../components/Contact';
 import Footer from './../components/Footer';
 import CallToAction from './../components/CallToAction';
 
-const HomePage = () => {
+const HomePage = ({setIsScrolled}) => {
   const [activeTab, setActiveTab] = useState('international');
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [currentDestination, setCurrentDestination] = useState(0);
@@ -311,7 +311,7 @@ const HomePage = () => {
       <main>
         {/* Hero Banner Section */}
         <section aria-labelledby="main-heading">
-          <Banner currentDestination={currentDestination} mousePosition={mousePosition}/>
+          <Banner setCurrentDestination={setCurrentDestination} packages={packages} currentDestination={currentDestination} mousePosition={mousePosition}/>
         </section>
 
         {/* Tour Packages Section */}
