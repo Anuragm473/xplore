@@ -16,7 +16,7 @@ import {
   Plane,
   Landmark,
 } from "lucide-react";
-import { CalendarDays, Home, Building } from 'lucide-react';
+import { CalendarDays, Home, Building, FileText } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
@@ -24,6 +24,7 @@ export default function NavBar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [activeSubDropdown, setActiveSubDropdown] = useState(null);
   const [searchFocused, setSearchFocused] = useState(false);
 
   useEffect(() => {
@@ -34,46 +35,97 @@ export default function NavBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // The main dropdown categories now just show Domestic and International
+  const topLevelDestinations = [
+    {
+      name: "Domestic",
+      icon: <Home className="w-4 h-4" />,
+      // Indian destinations for domestic travel
+      submenu: [
+        { name: "Goa", icon: <Compass className="w-4 h-4" /> },
+        { name: "Kashmir", icon: <Mountain className="w-4 h-4" /> },
+        { name: "Kerala", icon: <Compass className="w-4 h-4" /> },
+        { name: "Rajasthan", icon: <Landmark className="w-4 h-4" /> },
+        { name: "North East", icon: <Mountain className="w-4 h-4" /> },
+        { name: "Himachal Pradesh", icon: <Mountain className="w-4 h-4" /> },
+        { name: "Golden Triangle", icon: <Landmark className="w-4 h-4" /> },
+        { name: "Andaman & Nicobar", icon: <Compass className="w-4 h-4" /> },
+      ]
+    },
+    {
+      name: "International",
+      icon: <Globe className="w-4 h-4" />,
+      submenu: [
+        {
+          name: "Asia",
+          icon: <Globe className="w-4 h-4" />,
+          submenu: [
+            { name: "Thailand", icon: <Compass className="w-4 h-4" /> },
+            { name: "Singapore", icon: <Building className="w-4 h-4" /> },
+            { name: "Japan", icon: <Landmark className="w-4 h-4" /> },
+            { name: "Bali", icon: <Compass className="w-4 h-4" /> },
+          ]
+        },
+        {
+          name: "Europe",
+          icon: <Globe className="w-4 h-4" />,
+          submenu: [
+            { name: "France", icon: <Landmark className="w-4 h-4" /> },
+            { name: "Italy", icon: <Landmark className="w-4 h-4" /> },
+            { name: "Switzerland", icon: <Mountain className="w-4 h-4" /> },
+            { name: "Spain", icon: <Compass className="w-4 h-4" /> },
+          ]
+        },
+        {
+          name: "North America",
+          icon: <Globe className="w-4 h-4" />,
+          submenu: [
+            { name: "USA", icon: <Landmark className="w-4 h-4" /> },
+            { name: "Canada", icon: <Mountain className="w-4 h-4" /> },
+            { name: "Mexico", icon: <Compass className="w-4 h-4" /> },
+          ]
+        },
+        {
+          name: "Middle East",
+          icon: <Globe className="w-4 h-4" />,
+          submenu: [
+            { name: "Dubai", icon: <Building className="w-4 h-4" /> },
+            { name: "Turkey", icon: <Landmark className="w-4 h-4" /> },
+            { name: "Egypt", icon: <Landmark className="w-4 h-4" /> },
+          ]
+        },
+        {
+          name: "Australia & Oceania",
+          icon: <Globe className="w-4 h-4" />,
+          submenu: [
+            { name: "Australia", icon: <Compass className="w-4 h-4" /> },
+            { name: "New Zealand", icon: <Mountain className="w-4 h-4" /> },
+            { name: "Fiji", icon: <Compass className="w-4 h-4" /> },
+          ]
+        },
+      ]
+    }
+  ];
+
   const navLinks = [
     {
       name: "Destinations",
       href: "#destinations",
       icon: <MapPin className="w-4 h-4" />,
-      dropdown: [
-        {
-          name: "Domestic",
-          icon: <Home className="w-4 h-4" />,
-          submenu: [
-            { name: "Beach Getaways", icon: <Compass className="w-4 h-4" /> },
-            { name: "Mountain Retreats", icon: <Mountain className="w-4 h-4" /> },
-            { name: "City Explorations", icon: <Building className="w-4 h-4" /> },
-            { name: "Cultural Hotspots", icon: <Landmark className="w-4 h-4" /> },
-          ]
-        },
-        {
-          name: "International",
-          icon: <Plane className="w-4 h-4" />,
-          submenu: [
-            { name: "Exotic Islands", icon: <Compass className="w-4 h-4" /> },
-            { name: "Global Wonders", icon: <Globe className="w-4 h-4" /> },
-            { name: "Luxury Escapes", icon: <Star className="w-4 h-4" /> },
-            { name: "Adventure Destinations", icon: <Mountain className="w-4 h-4" /> },
-          ]
-        }
-      ],
+      dropdown: topLevelDestinations,
     },
     {
-      name: "Tour Packages",
-      href: "tours",
-      icon: <CalendarDays className="w-4 h-4" />,
+      name: "Visa Services",
+      href: "visa",
+      icon: <FileText className="w-4 h-4" />,
       dropdown: [
-        { name: "Asia", icon: <Globe className="w-4 h-4" /> },
-        { name: "Europe", icon: <Globe className="w-4 h-4" /> },
-        { name: "North America", icon: <Globe className="w-4 h-4" /> },
-        { name: "South America", icon: <Globe className="w-4 h-4" /> },
-        { name: "Africa", icon: <Globe className="w-4 h-4" /> },
-        { name: "Australia & Oceania", icon: <Globe className="w-4 h-4" /> },
-        { name: "Antarctica", icon: <Globe className="w-4 h-4" /> },
+        { name: "Tourist Visa", icon: <Plane className="w-4 h-4" /> },
+        { name: "Business Visa", icon: <Building className="w-4 h-4" /> },
+        { name: "Work Visa", icon: <FileText className="w-4 h-4" /> },
+        { name: "Student Visa", icon: <Home className="w-4 h-4" /> },
+        { name: "Transit Visa", icon: <Plane className="w-4 h-4" /> },
+        { name: "Electronic Visa", icon: <FileText className="w-4 h-4" /> },
+        { name: "Visa Requirements", icon: <FileText className="w-4 h-4" /> },
       ],
     },
     {
@@ -95,6 +147,11 @@ export default function NavBar() {
 
   const toggleDropdown = (index) => {
     setActiveDropdown(activeDropdown === index ? null : index);
+    setActiveSubDropdown(null); // Reset sub dropdown when toggling main dropdown
+  };
+
+  const toggleSubDropdown = (index) => {
+    setActiveSubDropdown(activeSubDropdown === index ? null : index);
   };
 
   return (
@@ -166,7 +223,7 @@ export default function NavBar() {
                   )}
                 </motion.button>
 
-                {link.dropdown && (
+                {link.dropdown && activeDropdown === index && (
                   <motion.div
                     className={`absolute left-0 mt-2 w-64 rounded-xl shadow-lg overflow-hidden ${
                       isScrolled
@@ -174,14 +231,8 @@ export default function NavBar() {
                         : "bg-white border border-blue-100"
                     }`}
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{
-                      opacity: activeDropdown === index ? 1 : 0,
-                      y: activeDropdown === index ? 0 : 20,
-                    }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    style={{
-                      pointerEvents: activeDropdown === index ? "auto" : "none",
-                    }}
                   >
                     <div className="p-4">
                       <h4
@@ -193,19 +244,67 @@ export default function NavBar() {
                       </h4>
                       <div className="space-y-2">
                         {link.dropdown.map((item, i) => (
-                          <motion.a
-                            key={i}
-                            href="/tours"
-                            className={`flex items-center px-3 py-2 text-sm rounded-lg transition-colors ${
-                              isScrolled
-                                ? "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
-                                : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-                            }`}
-                            whileHover={{ x: 5 }}
-                          >
-                            <span className="mr-3 text-blue-500">{item.icon}</span>
-                            {item.name}
-                          </motion.a>
+                          <div key={i}>
+                            <motion.button
+                              onClick={() => {
+                                if (item.submenu) {
+                                  toggleSubDropdown(i);
+                                } else {
+                                  navigate(link.href);
+                                  setActiveDropdown(null);
+                                }
+                              }}
+                              className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg transition-colors ${
+                                isScrolled
+                                  ? "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                                  : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+                              }`}
+                              whileHover={{ x: 5 }}
+                            >
+                              <div className="flex items-center">
+                                <span className="mr-3 text-blue-500">{item.icon}</span>
+                                {item.name}
+                              </div>
+                              {item.submenu && (
+                                <ChevronDown
+                                  className={`w-4 h-4 transition-transform duration-300 ${
+                                    activeSubDropdown === i ? "rotate-180" : ""
+                                  }`}
+                                />
+                              )}
+                            </motion.button>
+                            
+                            {/* Second level dropdown for destinations */}
+                            {item.submenu && activeSubDropdown === i && (
+                              <motion.div
+                                className="pl-6 mt-1 space-y-2"
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.2 }}
+                              >
+                                {item.submenu.map((subItem, j) => (
+                                  <motion.a
+                                    key={j}
+                                    href={`/destinations/${item.name.toLowerCase()}/${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}
+                                    className="flex items-center px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
+                                    onClick={() => {
+                                      setActiveDropdown(null);
+                                      setActiveSubDropdown(null);
+                                    }}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.05 * j }}
+                                  >
+                                    <span className="mr-3 text-blue-500">
+                                      {subItem.icon}
+                                    </span>
+                                    {subItem.name}
+                                  </motion.a>
+                                ))}
+                              </motion.div>
+                            )}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -360,20 +459,64 @@ export default function NavBar() {
                           transition={{ duration: 0.2 }}
                         >
                           {link.dropdown.map((item, i) => (
-                            <motion.a
-                              key={i}
-                              href="#"
-                              className="flex items-center px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
-                              onClick={() => setNavbarOpen(false)}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.1 + i * 0.05 }}
-                            >
-                              <span className="mr-3 text-blue-500">
-                                {item.icon}
-                              </span>
-                              {item.name}
-                            </motion.a>
+                            <div key={i}>
+                              <motion.button
+                                onClick={() => {
+                                  if (item.submenu) {
+                                    toggleSubDropdown(i);
+                                  } else {
+                                    navigate(link.href);
+                                    setNavbarOpen(false);
+                                  }
+                                }}
+                                className="flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.1 + i * 0.05 }}
+                              >
+                                <div className="flex items-center">
+                                  <span className="mr-3 text-blue-500">
+                                    {item.icon}
+                                  </span>
+                                  {item.name}
+                                </div>
+                                {item.submenu && (
+                                  <ChevronDown
+                                    className={`w-4 h-4 transition-transform duration-300 ${
+                                      activeSubDropdown === i ? "rotate-180" : ""
+                                    }`}
+                                  />
+                                )}
+                              </motion.button>
+
+                              {/* Second level for mobile */}
+                              {item.submenu && activeSubDropdown === i && (
+                                <motion.div
+                                  className="pl-6 mt-1 space-y-2"
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: "auto" }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                >
+                                  {item.submenu.map((subItem, j) => (
+                                    <motion.a
+                                      key={j}
+                                      href={`/destinations/${item.name.toLowerCase()}/${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}
+                                      className="flex items-center px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
+                                      onClick={() => setNavbarOpen(false)}
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: 0.05 * j }}
+                                    >
+                                      <span className="mr-3 text-blue-500">
+                                        {subItem.icon}
+                                      </span>
+                                      {subItem.name}
+                                    </motion.a>
+                                  ))}
+                                </motion.div>
+                              )}
+                            </div>
                           ))}
                         </motion.div>
                       )}

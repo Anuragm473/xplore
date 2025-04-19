@@ -21,6 +21,7 @@ import {
   Home
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 export default function ToursPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -816,64 +817,7 @@ export default function ToursPage() {
         </div>
         
         {/* Footer Section */}
-        <footer className="bg-slate-800 text-white py-12 mt-20">
-          <div className="container mx-auto max-w-6xl px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="text-xl font-bold mb-4">Travel Explorer</h3>
-                <p className="text-slate-300 mb-6">
-                  Discover the world with our carefully curated tours and travel experiences.
-                </p>
-                <div className="flex space-x-4">
-                  <a href="#" className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center hover:bg-amber-500 transition-colors">
-                    <span className="sr-only">Facebook</span>
-                    {/* Facebook icon would go here */}
-                  </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center hover:bg-amber-500 transition-colors">
-                    <span className="sr-only">Twitter</span>
-                    {/* Twitter icon would go here */}
-                  </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center hover:bg-amber-500 transition-colors">
-                    <span className="sr-only">Instagram</span>
-                    {/* Instagram icon would go here */}
-                  </a>
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-bold mb-4">Quick Links</h3>
-                <ul className="space-y-2">
-                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">Home</a></li>
-                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">Tours</a></li>
-                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">Destinations</a></li>
-                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">About Us</a></li>
-                  <li><a href="#" className="text-slate-300 hover:text-amber-400 transition-colors">Contact</a></li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-bold mb-4">Newsletter</h3>
-                <p className="text-slate-300 mb-4">
-                  Subscribe to our newsletter for travel tips and exclusive offers.
-                </p>
-                <div className="flex">
-                  <input
-                    type="email"
-                    placeholder="Your email"
-                    className="bg-slate-700 text-white px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-amber-500/50 w-full"
-                  />
-                  <button className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-r-lg transition-colors">
-                    Subscribe
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            <div className="border-t border-slate-700 mt-12 pt-8 text-center text-slate-400 text-sm">
-              <p>&copy; {new Date().getFullYear()} Travel Explorer. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
+        <Footer/>
       </div>
   );
 }

@@ -367,105 +367,105 @@ export default function TourDetailsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-16">
       {/* Back Button */}
-      <div className="container mx-auto max-w-6xl px-4 py-4">
-        <motion.button
-          whileHover={{ x: -5 }}
-          whileTap={{ scale: 0.95 }}
-          className="inline-flex items-center text-gray-600 hover:text-amber-500 transition-colors"
-          onClick={() => window.history.back()}
+      <div className="container mx-auto max-w-6xl px-4 py-6">
+  <motion.button
+    whileHover={{ x: -5 }}
+    whileTap={{ scale: 0.95 }}
+    className="inline-flex items-center text-gray-700 hover:text-emerald-600 transition-colors"
+    onClick={() => window.history.back()}
+  >
+    <ArrowLeft className="w-5 h-5 mr-2" />
+    <span className="font-medium">Back to Tours</span>
+  </motion.button>
+</div>
+
+{/* Hero Section */}
+<div className="relative">
+  {/* Main Image */}
+  <div className="h-96 lg:h-[550px] overflow-hidden relative">
+    <motion.img
+      initial={{ scale: 1.1, opacity: 0.8 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 1.5 }}
+      src={tour.images[0]}
+      alt={tour.name}
+      className="w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent"></div>
+  </div>
+
+  {/* Tour Name and Location */}
+  <div className="container mx-auto max-w-6xl px-4 relative z-10">
+    <div className="absolute bottom-10 left-4 right-4 md:left-6 md:right-auto md:bottom-12">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
+        <div className="inline-flex items-center mb-4 bg-emerald-50 px-4 py-1.5 rounded-full backdrop-blur-sm border border-emerald-100 shadow-sm">
+          <Compass className="w-4 h-4 text-emerald-600 mr-2" />
+          <span className="text-sm font-semibold text-emerald-800">
+            {tour.category === "mountain"
+              ? "Mountain Adventure"
+              : tour.category}
+          </span>
+        </div>
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-3 md:max-w-3xl drop-shadow-md">
+          {tour.name}
+        </h1>
+        <div className="flex flex-wrap items-center gap-5 mb-4">
+          <div className="flex items-center bg-white/90 px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm">
+            <MapPin className="w-4 h-4 text-emerald-600 mr-2" />
+            <span className="text-sm font-medium text-gray-800">{tour.location}</span>
+          </div>
+          <div className="flex items-center bg-white/90 px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm">
+            <Calendar className="w-4 h-4 text-emerald-600 mr-2" />
+            <span className="text-sm font-medium text-gray-800">{tour.duration} days</span>
+          </div>
+          <div className="flex items-center bg-white/90 px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm">
+            <Star className="w-4 h-4 text-amber-500 fill-amber-400 mr-2" />
+            <span className="text-sm font-medium text-gray-800">
+              {tour.rating} ({tour.review} reviews)
+            </span>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  </div>
+
+  {/* Image Gallery Thumbnails */}
+  <div className="container mx-auto max-w-6xl px-4 relative z-10">
+    <div className="absolute bottom-[-60px] right-6 hidden md:flex space-x-4">
+      {tour.images.slice(1, 4).map((image, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 + index * 0.2 }}
+          className="w-28 h-28 rounded-lg overflow-hidden border-2 border-white shadow-lg hover:border-emerald-500 transition-all duration-300 cursor-pointer"
         >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back to Tours
-        </motion.button>
-      </div>
-
-      {/* Hero Section */}
-      <div className="relative">
-        {/* Main Image */}
-        <div className="h-96 lg:h-[500px] overflow-hidden relative">
-          <motion.img
-            initial={{ scale: 1.1, opacity: 0.8 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.5 }}
-            src={tour.images[0]}
-            alt={tour.name}
-            className="w-full h-full object-fit"
+          <img
+            src={image}
+            alt={`${tour.name} ${index + 1}`}
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/30 via-transparent to-transparent"></div>
+        </motion.div>
+      ))}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9 }}
+        className="w-28 h-28 rounded-lg overflow-hidden bg-white/90 backdrop-blur-sm border-2 border-white flex items-center justify-center cursor-pointer hover:border-emerald-500 transition-all shadow-lg"
+      >
+        <div className="text-center">
+          <span className="block text-emerald-600 font-bold text-lg">+12</span>
+          <span className="text-xs text-gray-600">more photos</span>
         </div>
-
-        {/* Tour Name and Location */}
-        <div className="container mx-auto max-w-6xl px-4 relative z-10">
-          <div className="absolute bottom-8 left-4 right-4 md:left-4 md:right-auto md:bottom-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              <div className="inline-flex items-center mb-3 bg-white/90 px-3 py-1 rounded-full backdrop-blur-sm border border-gray-200">
-                <Compass className="w-4 h-4 text-amber-500 mr-2" />
-                <span className="text-sm font-medium text-gray-700">
-                  {tour.category === "mountain"
-                    ? "Mountain Adventure"
-                    : tour.category}
-                </span>
-              </div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2 md:max-w-3xl">
-                {tour.name}
-              </h1>
-              <div className="flex flex-wrap items-center gap-4 mb-3">
-                <div className="flex items-center">
-                  <MapPin className="w-5 h-5 text-amber-500 mr-1" />
-                  <span className="text-gray-700">{tour.location}</span>
-                </div>
-                <div className="flex items-center">
-                  <Calendar className="w-5 h-5 text-amber-500 mr-1" />
-                  <span className="text-gray-700">{tour.duration} days</span>
-                </div>
-                <div className="flex items-center">
-                  <Star className="w-5 h-5 text-amber-500 fill-amber-400 mr-1" />
-                  <span className="text-gray-700">
-                    {tour.rating} ({tour.review} reviews)
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Image Gallery Thumbnails */}
-        <div className="container mx-auto max-w-6xl px-4 relative z-10">
-          <div className="absolute bottom-[-60px] right-4 hidden md:flex space-x-3">
-            {tour.images.slice(1, 4).map((image, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + index * 0.2 }}
-                className="w-24 h-24 rounded-lg overflow-hidden border-2 border-gray-200 shadow-lg hover:border-amber-500 transition-all duration-300 cursor-pointer"
-              >
-                <img
-                  src={image}
-                  alt={`${tour.name} ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-            ))}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 }}
-              className="w-24 h-24 rounded-lg overflow-hidden bg-white/80 backdrop-blur-sm border-2 border-gray-200 flex items-center justify-center cursor-pointer hover:border-amber-500 transition-all"
-            >
-              <div className="text-center">
-                <span className="block text-amber-500 font-bold">+12</span>
-                <span className="text-xs text-gray-500">more</span>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </div>
+      </motion.div>
+    </div>
+  </div>
+</div>
 
       {/* Main Content */}
       <div className="container mx-auto max-w-6xl px-4 py-12 md:py-20">

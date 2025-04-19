@@ -6,6 +6,7 @@ import HomePage from "./Pages/HomePage";
 import ToursPage from "./Pages/ToursPage";
 import "./index.css"; // Your global styles
 import TourDetailsPage from "./Pages/TourDetailsPage";
+import VisaSelectionPage from "./Pages/VisaSelectionPage";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
         path: "tours/tour",
         element: <TourDetailsPage />,
       },
+      {
+        path: "visa",
+        element: <VisaSelectionPage/>,
+      }
     ],
   },
 ]);

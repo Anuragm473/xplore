@@ -92,8 +92,10 @@ export default function Banner({ currentDestination, mousePosition, setCurrentDe
             transition={{ type: 'spring', damping: 30, stiffness: 100 }}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/40 to-slate-900/90" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-300/60 via-slate-700/30 to-slate-800/60" />
+<div className="absolute inset-0 bg-gradient-to-r from-slate-700/40 to-transparent" />
+
+
       </div>
 
       {/* Content Container with responsive padding */}
