@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Globe, MapPin, Shield, Calendar, Phone, Star, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Globe, MapPin, Shield, Calendar, Phone, Star, ArrowRight, ArrowLeft, User, Search, AlertCircle } from 'lucide-react';
 
 export default function Banner({packages}) {
   const [destination, setDestination] = useState('Hidden Treasures');
@@ -14,11 +14,32 @@ export default function Banner({packages}) {
   const cardStackRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
   
+  // Active tab state
+  const [activeTab, setActiveTab] = useState('FLIGHTS');
+  
   // Packages data
   const allPackages = [
-    ...packages.international,
-    ...packages.local
+    ...packages?.international || [],
+    ...packages?.local || []
   ];
+  
+  // Form state
+  const [fromLocation, setFromLocation] = useState('');
+  const [toLocation, setToLocation] = useState('');
+  const [departureDate, setDepartureDate] = useState('');
+  const [returnDate, setReturnDate] = useState('');
+  const [travelers, setTravelers] = useState('1 Traveler, Economy');
+  const [hotelLocation, setHotelLocation] = useState('');
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
+  const [rooms, setRooms] = useState('1 Room, 2 Adults');
+  const [tourDestination, setTourDestination] = useState('');
+  const [tourDate, setTourDate] = useState('');
+  const [tourGroup, setTourGroup] = useState('2 People');
+  
+  // Form validation
+  const [errors, setErrors] = useState({});
+  const [formSubmitted, setFormSubmitted] = useState(false);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,324 +64,395 @@ export default function Banner({packages}) {
     };
   }, []);
   
-  // Handle drag start
-  const handleDragStart = (e) => {
-    if (!isMobile) return;
+  // Format date string to display in input field
+  const formatDateForDisplay = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // Return original if invalid
     
-    const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-    setIsDragging(true);
-    setDragStartX(clientX);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   };
   
-  // Handle drag move
-  const handleDragMove = (e) => {
-    if (!isDragging || !isMobile) return;
+  // Validate form based on active tab
+  const validateForm = () => {
+    const newErrors = {};
     
-    const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
-    const offset = clientX - dragStartX;
-    setDragOffset(offset);
-  };
-  
-  // Handle drag end
-  const handleDragEnd = () => {
-    if (!isDragging || !isMobile) return;
-    
-    setIsDragging(false);
-    
-    // If dragged more than 100px, change card
-    if (Math.abs(dragOffset) > 100) {
-      if (dragOffset > 0 && currentPackageIndex > 0) {
-        // Dragged right - show previous card
-        setCurrentPackageIndex(currentPackageIndex - 1);
-      } else if (dragOffset < 0 && currentPackageIndex < allPackages.length - 1) {
-        // Dragged left - show next card
-        setCurrentPackageIndex(currentPackageIndex + 1);
+    if (activeTab === 'FLIGHTS') {
+      if (!fromLocation.trim()) newErrors.fromLocation = 'Origin is required';
+      if (!toLocation.trim()) newErrors.toLocation = 'Destination is required';
+      if (!departureDate) newErrors.departureDate = 'Departure date is required';
+      if (!returnDate) newErrors.returnDate = 'Return date is required';
+      
+      // Check if return date is after departure date
+      if (departureDate && returnDate && new Date(returnDate) < new Date(departureDate)) {
+        newErrors.returnDate = 'Return date must be after departure date';
+      }
+    } 
+    else if (activeTab === 'HOTELS') {
+      if (!hotelLocation.trim()) newErrors.hotelLocation = 'Destination is required';
+      if (!checkInDate) newErrors.checkInDate = 'Check-in date is required';
+      if (!checkOutDate) newErrors.checkOutDate = 'Check-out date is required';
+      
+      // Check if check-out date is after check-in date
+      if (checkInDate && checkOutDate && new Date(checkOutDate) < new Date(checkInDate)) {
+        newErrors.checkOutDate = 'Check-out date must be after check-in date';
       }
     }
+    else if (activeTab === 'TOURS') {
+      if (!tourDestination.trim()) newErrors.tourDestination = 'Tour destination is required';
+      if (!tourDate) newErrors.tourDate = 'Tour date is required';
+    }
     
-    setDragOffset(0);
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
   
-  // Go to specific card (for desktop)
-  const goToCard = (index) => {
-    if (!isMobile) {
-      setCurrentPackageIndex(index);
+  // Handle tab change
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setErrors({});
+    setFormSubmitted(false);
+  };
+  
+  // Handle search form submission
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+    
+    if (validateForm()) {
+      // Form is valid, proceed with search
+      console.log('Search params for', activeTab, ':', 
+        activeTab === 'FLIGHTS' ? { fromLocation, toLocation, departureDate, returnDate, travelers } :
+        activeTab === 'HOTELS' ? { hotelLocation, checkInDate, checkOutDate, rooms } :
+        { tourDestination, tourDate, tourGroup }
+      );
+      
+      // You would typically call an API or redirect here
+      alert(`${activeTab} search submitted successfully!`);
+    } else {
+      console.log('Form has errors');
     }
   };
-  
-  // Navigate to prev/next card
-  const navigatePrev = () => {
-    if (currentPackageIndex > 0) {
-      setCurrentPackageIndex(currentPackageIndex - 1);
-    }
-  };
-  
-  const navigateNext = () => {
-    if (currentPackageIndex < allPackages.length - 1) {
-      setCurrentPackageIndex(currentPackageIndex + 1);
+
+  // Render the appropriate form based on active tab
+  const renderForm = () => {
+    switch(activeTab) {
+      case 'FLIGHTS':
+        return (
+          <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3 md:gap-2 items-center">
+            {/* From Location */}
+            <div className="w-full md:w-1/5 relative">
+              <div className={`flex items-center gap-2 bg-gray-100 p-3 rounded-md ${errors.fromLocation && formSubmitted ? 'border border-red-500' : ''}`}>
+                <MapPin className="w-5 h-5 text-gray-500" />
+                <input 
+                  type="text" 
+                  placeholder="From"
+                  value={fromLocation}
+                  onChange={(e) => setFromLocation(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800"
+                />
+              </div>
+              {errors.fromLocation && formSubmitted && (
+                <p className="text-red-500 text-xs mt-1 absolute">{errors.fromLocation}</p>
+              )}
+            </div>
+            
+            {/* To Location */}
+            <div className="w-full md:w-1/5 relative">
+              <div className={`flex items-center gap-2 bg-gray-100 p-3 rounded-md ${errors.toLocation && formSubmitted ? 'border border-red-500' : ''}`}>
+                <MapPin className="w-5 h-5 text-gray-500" />
+                <input 
+                  type="text" 
+                  placeholder="To"
+                  value={toLocation}
+                  onChange={(e) => setToLocation(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800"
+                />
+              </div>
+              {errors.toLocation && formSubmitted && (
+                <p className="text-red-500 text-xs mt-1 absolute">{errors.toLocation}</p>
+              )}
+            </div>
+            
+            {/* Departure Date */}
+            <div className="w-full md:w-1/5 relative">
+              <div className={`flex items-center gap-2 bg-gray-100 p-3 rounded-md ${errors.departureDate && formSubmitted ? 'border border-red-500' : ''}`}>
+                <Calendar className="w-5 h-5 text-gray-500" />
+                <input 
+                  type="date" 
+                  placeholder="Departure Date"
+                  value={departureDate}
+                  onChange={(e) => setDepartureDate(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800"
+                />
+              </div>
+              {errors.departureDate && formSubmitted && (
+                <p className="text-red-500 text-xs mt-1 absolute">{errors.departureDate}</p>
+              )}
+            </div>
+            
+            {/* Return Date */}
+            <div className="w-full md:w-1/5 relative">
+              <div className={`flex items-center gap-2 bg-gray-100 p-3 rounded-md ${errors.returnDate && formSubmitted ? 'border border-red-500' : ''}`}>
+                <Calendar className="w-5 h-5 text-gray-500" />
+                <input 
+                  type="date" 
+                  placeholder="Return Date"
+                  value={returnDate}
+                  onChange={(e) => setReturnDate(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800"
+                />
+              </div>
+              {errors.returnDate && formSubmitted && (
+                <p className="text-red-500 text-xs mt-1 absolute">{errors.returnDate}</p>
+              )}
+            </div>
+            
+            {/* Travelers */}
+            <div className="w-full md:w-1/5 relative">
+              <div className="flex items-center gap-2 bg-gray-100 p-3 rounded-md">
+                <User className="w-5 h-5 text-gray-500" />
+                <select
+                  value={travelers}
+                  onChange={(e) => setTravelers(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800 appearance-none cursor-pointer"
+                >
+                  <option>1 Traveler, Economy</option>
+                  <option>2 Travelers, Economy</option>
+                  <option>1 Traveler, Business</option>
+                  <option>2 Travelers, Business</option>
+                </select>
+              </div>
+            </div>
+            
+            {/* Search Button - Only visible on mobile */}
+            <button
+              type="submit"
+              className="w-full md:hidden bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-md font-medium flex items-center justify-center gap-2 transition-colors"
+            >
+              <Search className="w-5 h-5" />
+              Search Flights
+            </button>
+          </form>
+        );
+        
+      case 'HOTELS':
+        return (
+          <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3 md:gap-2 items-center">
+            {/* Hotel Location */}
+            <div className="w-full md:w-1/4 relative">
+              <div className={`flex items-center gap-2 bg-gray-100 p-3 rounded-md ${errors.hotelLocation && formSubmitted ? 'border border-red-500' : ''}`}>
+                <MapPin className="w-5 h-5 text-gray-500" />
+                <input 
+                  type="text" 
+                  placeholder="Where are you going?"
+                  value={hotelLocation}
+                  onChange={(e) => setHotelLocation(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800"
+                />
+              </div>
+              {errors.hotelLocation && formSubmitted && (
+                <p className="text-red-500 text-xs mt-1 absolute">{errors.hotelLocation}</p>
+              )}
+            </div>
+            
+            {/* Check-in Date */}
+            <div className="w-full md:w-1/4 relative">
+              <div className={`flex items-center gap-2 bg-gray-100 p-3 rounded-md ${errors.checkInDate && formSubmitted ? 'border border-red-500' : ''}`}>
+                <Calendar className="w-5 h-5 text-gray-500" />
+                <input 
+                  type="date" 
+                  placeholder="Check-in Date"
+                  value={checkInDate}
+                  onChange={(e) => setCheckInDate(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800"
+                />
+              </div>
+              {errors.checkInDate && formSubmitted && (
+                <p className="text-red-500 text-xs mt-1 absolute">{errors.checkInDate}</p>
+              )}
+            </div>
+            
+            {/* Check-out Date */}
+            <div className="w-full md:w-1/4 relative">
+              <div className={`flex items-center gap-2 bg-gray-100 p-3 rounded-md ${errors.checkOutDate && formSubmitted ? 'border border-red-500' : ''}`}>
+                <Calendar className="w-5 h-5 text-gray-500" />
+                <input 
+                  type="date" 
+                  placeholder="Check-out Date"
+                  value={checkOutDate}
+                  onChange={(e) => setCheckOutDate(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800"
+                />
+              </div>
+              {errors.checkOutDate && formSubmitted && (
+                <p className="text-red-500 text-xs mt-1 absolute">{errors.checkOutDate}</p>
+              )}
+            </div>
+            
+            {/* Rooms */}
+            <div className="w-full md:w-1/4 relative">
+              <div className="flex items-center gap-2 bg-gray-100 p-3 rounded-md">
+                <User className="w-5 h-5 text-gray-500" />
+                <select
+                  value={rooms}
+                  onChange={(e) => setRooms(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800 appearance-none cursor-pointer"
+                >
+                  <option>1 Room, 2 Adults</option>
+                  <option>1 Room, 1 Adult</option>
+                  <option>2 Rooms, 4 Adults</option>
+                  <option>2 Rooms, 2 Adults, 2 Children</option>
+                </select>
+              </div>
+            </div>
+            
+            {/* Search Button - Only visible on mobile */}
+            <button
+              type="submit"
+              className="w-full md:hidden bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-md font-medium flex items-center justify-center gap-2 transition-colors"
+            >
+              <Search className="w-5 h-5" />
+              Search Hotels
+            </button>
+          </form>
+        );
+        
+      case 'TOURS':
+        return (
+          <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3 md:gap-2 items-center">
+            {/* Tour Destination */}
+            <div className="w-full md:w-1/3 relative">
+              <div className={`flex items-center gap-2 bg-gray-100 p-3 rounded-md ${errors.tourDestination && formSubmitted ? 'border border-red-500' : ''}`}>
+                <Globe className="w-5 h-5 text-gray-500" />
+                <input 
+                  type="text" 
+                  placeholder="Tour Destination"
+                  value={tourDestination}
+                  onChange={(e) => setTourDestination(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800"
+                />
+              </div>
+              {errors.tourDestination && formSubmitted && (
+                <p className="text-red-500 text-xs mt-1 absolute">{errors.tourDestination}</p>
+              )}
+            </div>
+            
+            {/* Tour Date */}
+            <div className="w-full md:w-1/3 relative">
+              <div className={`flex items-center gap-2 bg-gray-100 p-3 rounded-md ${errors.tourDate && formSubmitted ? 'border border-red-500' : ''}`}>
+                <Calendar className="w-5 h-5 text-gray-500" />
+                <input 
+                  type="date" 
+                  placeholder="Tour Date"
+                  value={tourDate}
+                  onChange={(e) => setTourDate(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800"
+                />
+              </div>
+              {errors.tourDate && formSubmitted && (
+                <p className="text-red-500 text-xs mt-1 absolute">{errors.tourDate}</p>
+              )}
+            </div>
+            
+            {/* Tour Group Size */}
+            <div className="w-full md:w-1/3 relative">
+              <div className="flex items-center gap-2 bg-gray-100 p-3 rounded-md">
+                <User className="w-5 h-5 text-gray-500" />
+                <select
+                  value={tourGroup}
+                  onChange={(e) => setTourGroup(e.target.value)}
+                  className="bg-transparent w-full border-none focus:outline-none text-gray-800 appearance-none cursor-pointer"
+                >
+                  <option>2 People</option>
+                  <option>1 Person</option>
+                  <option>3-5 People</option>
+                  <option>6+ People</option>
+                </select>
+              </div>
+            </div>
+            
+            {/* Search Button - Only visible on mobile */}
+            <button
+              type="submit"
+              className="w-full md:hidden bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-md font-medium flex items-center justify-center gap-2 transition-colors"
+            >
+              <Search className="w-5 h-5" />
+              Find Tours
+            </button>
+          </form>
+        );
+      
+      default:
+        return null;
     }
   };
 
   return (
-    <div className="bg-blue-50 pt-24 sm:pt-16 lg:pt-20 text-gray-800 py-10 sm:py-16 lg:py-20 px-4 md:px-8 lg:px-16 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-full h-full bg-blue-50">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div 
-              key={i}
-              className="absolute rounded-full bg-blue-400"
-              style={{
-                width: `${Math.random() * 10 + 5}px`,
-                height: `${Math.random() * 10 + 5}px`,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                opacity: Math.random() * 0.5 + 0.5
-              }}
-            />
-          ))}
-        </div>
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Hero Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center z-0" 
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}
+      >
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/20"></div>
       </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+      
+      <div className="relative z-10 h-full flex flex-col justify-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto w-full pt-20">
           {/* Hero Content */}
-          <div className="lg:flex-1 space-y-4 sm:space-y-6 text-center lg:text-left max-w-xl mx-auto lg:mx-0">
-            <div className="flex items-center justify-center lg:justify-start">
-              <span className="inline-block px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-blue-600 text-white text-xs sm:text-sm font-medium mb-2">
-                <span className="flex items-center gap-1 sm:gap-2">
-                  <Globe className="w-3 h-3 sm:w-4 sm:h-4" />
-                  Discover New Adventures
-                </span>
-              </span>
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-0">
-              <span className="block">Explore The World's</span>
-              <div className="block text-center lg:inline-block lg:text-left relative h-10 sm:h-16 md:h-20 mt-2 sm:mt-4 lg:mt-0 lg:ml-0">
-                <div className="absolute left-0 right-0 lg:left-0 lg:right-auto w-full lg:w-auto mx-auto">
-                  {destinations.map((dest, index) => (
-                    <div 
-                      key={index}
-                      className="absolute left-0 right-0 lg:left-0 lg:right-auto mx-auto lg:mx-0 transition-all duration-500 text-blue-600 whitespace-nowrap"
-                      style={{ 
-                        opacity: dest === destination ? 1 : 0,
-                        transform: dest === destination ? 'translateY(0)' : 'translateY(10px)'
-                      }}
-                    >
-                      {dest}
-                    </div>
-                  ))}
-                </div>
-              </div>
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-md">
+              Your Dream Vacation Awaits
             </h1>
-            
-            <p className="text-base mb-0 sm:text-lg md:text-xl font-light leading-relaxed text-gray-700 max-w-2xl mx-auto lg:mx-0">
-              Embark on unforgettable journeys to breathtaking destinations. Let us guide you through extraordinary experiences tailored to your adventurous spirit.
+            <p className="text-xl md:text-2xl text-white font-light italic mb-8 drop-shadow-md">
+              Explore the World with us.
             </p>
-            
-            <div className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 pt-4 sm:pt-6">
-              <button className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white text-sm sm:text-base font-bold rounded-lg transition duration-300 shadow-md flex items-center gap-2">
-                <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
-                Browse Tours
+          </div>
+          
+          {/* Tab Navigation */}
+          <div className="flex justify-center mb-0">
+            <div className="bg-teal-500 inline-flex rounded-t-lg overflow-hidden">
+              <button 
+                className={`px-6 py-3 font-medium transition ${activeTab === 'FLIGHTS' ? 'bg-teal-600 text-white' : 'text-white hover:bg-teal-600'}`}
+                onClick={() => handleTabChange('FLIGHTS')}
+              >
+                FLIGHTS
               </button>
-              <button className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 bg-transparent border-2 border-blue-600 hover:bg-blue-50 text-blue-600 text-sm sm:text-base font-bold rounded-lg transition duration-300 flex items-center gap-2">
-                <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
-                View Destinations
+              <button 
+                className={`px-6 py-3 font-medium transition ${activeTab === 'HOTELS' ? 'bg-teal-600 text-white' : 'text-white hover:bg-teal-600'}`}
+                onClick={() => handleTabChange('HOTELS')}
+              >
+                HOTELS
               </button>
-            </div>
-            
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 sm:gap-6 pt-6 sm:pt-8">
-              <div className="flex items-center gap-2">
-                <div className="text-orange-500 bg-orange-100 p-1 sm:p-2 rounded-full">
-                  <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
-                </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-800">24/7 Support</span>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <div className="text-orange-500 bg-orange-100 p-1 sm:p-2 rounded-full">
-                  <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
-                </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-800">Secure Booking</span>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <div className="text-orange-500 bg-orange-100 p-1 sm:p-2 rounded-full">
-                  <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
-                </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-800">Flexible Scheduling</span>
-              </div>
-            </div>
-
-            {/* Stats Section */}
-            <div className="flex justify-center lg:justify-start flex-wrap gap-6 sm:gap-8 pt-6 sm:pt-10 pb-2">
-              <div className="text-center">
-                <p className="text-2xl sm:text-3xl font-bold text-blue-600">100+</p>
-                <p className="text-xs sm:text-sm text-gray-600">Countries</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl sm:text-3xl font-bold text-blue-600">1000+</p>
-                <p className="text-xs sm:text-sm text-gray-600">Destinations</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl sm:text-3xl font-bold text-blue-600">10K+</p>
-                <p className="text-xs sm:text-sm text-gray-600">Happy Travelers</p>
-              </div>
+              <button 
+                className={`px-6 py-3 font-medium transition ${activeTab === 'TOURS' ? 'bg-teal-600 text-white' : 'text-white hover:bg-teal-600'}`}
+                onClick={() => handleTabChange('TOURS')}
+              >
+                TOURS
+              </button>
             </div>
           </div>
           
-          {/* Package Card Stack - Fixed positioning and images */}
-          <div className="lg:flex-1 flex-col flex gap-4 items-center justify-center w-full max-w-md mx-auto mt-8 lg:mt-0">
-            <div 
-             className="relative h-64 sm:h-72 md:h-80 lg:h-96 w-full max-w-[13rem] sm:max-w-sm"
-              ref={cardStackRef}
-              onMouseDown={handleDragStart}
-              onMouseMove={handleDragMove}
-              onMouseUp={handleDragEnd}
-              onMouseLeave={handleDragEnd}
-              onTouchStart={handleDragStart}
-              onTouchMove={handleDragMove}
-              onTouchEnd={handleDragEnd}
-            >
-              {/* Card Stack */}
-              {allPackages.map((pkg, index) => {
-                // Calculate card position
-                const isActive = index === currentPackageIndex;
-                const isPrev = index === currentPackageIndex - 1 || index === currentPackageIndex - 2;
-                const isNext = index === currentPackageIndex + 1 || index === currentPackageIndex + 2;
-                
-                // Only render visible cards (current, 2 before, 2 after)
-                if (!isActive && !isPrev && !isNext) return null;
-                
-                let cardStyle = {};
-                let zIndex = 0;
-                
-                if (isActive) {
-                  zIndex = 30;
-                  cardStyle = {
-                    transform: isDragging ? `translateX(${dragOffset}px)` : 'translateX(0) rotate(0deg)',
-                    opacity: 1
-                  };
-                } else if (index === currentPackageIndex - 1) {
-                  zIndex = 20;
-                  cardStyle = {
-                    transform: 'translateX(-10%) rotate(-5deg)',
-                    opacity: 0.9
-                  };
-                } else if (index === currentPackageIndex - 2) {
-                  zIndex = 10;
-                  cardStyle = {
-                    transform: 'translateX(-15%) rotate(-10deg)',
-                    opacity: 0.7
-                  };
-                } else if (index === currentPackageIndex + 1) {
-                  zIndex = 20;
-                  cardStyle = {
-                    transform: 'translateX(10%) rotate(4deg)',
-                    opacity: 0.9
-                  };
-                } else if (index === currentPackageIndex + 2) {
-                  zIndex = 10;
-                  cardStyle = {
-                    transform: 'translateX(15%) rotate(8deg)',
-                    opacity: 0.7
-                  };
-                }
-
-                // Generate placeholder image URL for the card
-                const imageUrl = `/api/placeholder/400/320`;
-                
-                return (
-                  <div 
-                    key={pkg.id}
-                    className="absolute top-0 left-0 right-0 mx-auto w-full sm:w-4/5 md:w-full max-w-xs bg-white rounded-xl sm:rounded-2xl border border-blue-200 overflow-hidden transition-all duration-300 shadow-none lg:shadow-xl"
-                    style={{
-                      ...cardStyle,
-                      zIndex,
-                      cursor: isMobile ? 'grab' : 'pointer'
-                    }}
-                    onClick={() => goToCard(index)}
-                  >
-                    <div className="h-32 sm:h-36 md:h-40 lg:h-48 overflow-hidden relative">
-                      <div 
-                        className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: `url(../${pkg.images[0]})` }}
-                      ></div>
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30"></div>
-                      <div className="absolute top-3 left-3 bg-white/80 backdrop-blur-sm rounded-full px-2 py-1 text-xs sm:text-sm font-medium">
-                        {pkg.destination.split(',')[0]}
-                      </div>
-                    </div>
-                    
-                    <div className="p-3 sm:p-4">
-                      <div className="flex justify-between items-center mb-1 sm:mb-2">
-                        <h3 className="text-base sm:text-lg font-bold text-gray-800 truncate">{pkg.destination}</h3>
-                        <div className="flex items-center">
-                          <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500 fill-yellow-500" />
-                          <span className="ml-1 text-xs sm:text-sm font-medium">{pkg.rating}</span>
-                        </div>
-                      </div>
-                      
-                      <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 line-clamp-2">{pkg.description}</p>
-                      
-                      <div className="flex flex-wrap gap-2 sm:gap-3 mb-2 sm:mb-3">
-                        <div className="flex items-center text-xs sm:text-sm text-gray-700">
-                          <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1 text-blue-500" />
-                          <span>{pkg.duration}</span>
-                        </div>
-                        <div className="flex items-center text-xs sm:text-sm text-gray-700">
-                          <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1 text-blue-500" />
-                          <span>{pkg.destination.split(',')[0]}</span>
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <div className="text-base sm:text-lg font-bold text-blue-600">{pkg.price}</div>
-                        <button className="px-2 sm:px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-xs sm:text-sm font-medium rounded-lg transition duration-300">
-                          Book Now
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-              
-              {/* Navigation buttons */}
-              <button 
-                className="absolute top-1/2 left-0 z-40 w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center bg-white/80 hover:bg-white text-gray-800 rounded-full shadow-none sm:shadow-md transition-all duration-300 transform -translate-y-1/2 -translate-x-1/2"
-                onClick={navigatePrev}
-                disabled={currentPackageIndex === 0}
-                style={{ opacity: currentPackageIndex === 0 ? 0.5 : 1 }}
-              >
-                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4" />
-              </button>
-              
-              <button 
-                className="absolute top-1/2 right-0 z-40 w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center bg-white/80 hover:bg-white text-gray-800 rounded-full shadow-none sm:shadow-md transition-all duration-300 transform -translate-y-1/2 translate-x-1/2"
-                onClick={navigateNext}
-                disabled={currentPackageIndex === allPackages.length - 1}
-                style={{ opacity: currentPackageIndex === allPackages.length - 1 ? 0.5 : 1 }}
-              >
-                <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-              </button>
-              
-              {/* Small indicator */}
-              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex gap-1 mb-2">
-                {allPackages.slice(0, Math.min(5, allPackages.length)).map((_, index) => (
-                  <div 
-                    key={index}
-                    className={`h-1 rounded-full transition-all duration-300 ${
-                      index === currentPackageIndex % 5 ? 'w-3 sm:w-4 bg-blue-500' : 'w-1 bg-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+          {/* Search Form */}
+          <div className="bg-white/90 backdrop-blur-sm shadow-lg rounded-lg p-4 md:p-6 max-w-5xl mx-auto">
+            {renderForm()}
             
-            <div className="text-center mt-3 sm:mt-4 text-xs text-gray-500">
-              {isMobile ? "Swipe to explore packages" : "Click to view package details"}
+            {/* Search Button - Only visible on desktop */}
+            <div className="hidden md:flex justify-center mt-6">
+              <button
+                onClick={handleSearch}
+                className="bg-teal-500 hover:bg-teal-600 text-white py-3 px-10 rounded-md font-medium flex items-center justify-center gap-2 transition-colors"
+              >
+                <Search className="w-5 h-5" />
+                {activeTab === 'FLIGHTS' ? 'Search Flights' : 
+                 activeTab === 'HOTELS' ? 'Search Hotels' : 'Find Tours'}
+              </button>
             </div>
           </div>
         </div>
