@@ -7,6 +7,54 @@ export default function AppLayout() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isScrolled, setIsScrolled] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
+   const [packages, setPackages] = useState({
+      international: [],
+      local: [],
+      fixesDeparture: [],
+    });
+
+    useEffect(() => {
+        async function fetchApi() {
+          try {
+            const response = await fetch('https://xplore-backend-alpha.vercel.app/api');
+            const data = await response.json();
+    
+            const categorizedPackages = {
+              international: [],
+              local: [],
+              fixesDeparture: [],
+            };
+            console.log(data)
+    
+            data.packages.forEach(pkg => {
+              const formattedPackage = {
+                id: pkg.id, // using the virtual id
+                destination: pkg.destination,
+                images: pkg.images,
+                duration: pkg.duration,
+                price: pkg.price,
+                rating: pkg.rating,
+                description: pkg.description,
+              };
+    
+              // categorize based on the `category` field
+              if (pkg.category === 'international') {
+                categorizedPackages.international.push(formattedPackage);
+              } else if (pkg.category === 'local') {
+                categorizedPackages.local.push(formattedPackage);
+              } else if (pkg.category === 'fixedDeparture') {
+                categorizedPackages.fixesDeparture.push(formattedPackage);
+              }
+            });
+    
+            setPackages(categorizedPackages);
+          } catch (error) {
+            console.error('Error fetching packages:', error);
+          }
+        }
+    
+        fetchApi();
+      }, []);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -34,10 +82,10 @@ export default function AppLayout() {
   return (
     <div className="bg-slate-900 min-h-screen">
       <header>
-        <NavBar isScrolled={isScrolled} navLinks={navLinks} navbarOpen={navbarOpen} />
+        <NavBar packages={packages} isScrolled={isScrolled} navLinks={navLinks} navbarOpen={navbarOpen} />
       </header>
       <main>
-        <HomePage setIsScrolled={setIsScrolled}/>
+        <HomePage packages={packages} setIsScrolled={setIsScrolled}/>
       </main>
     </div>
   );

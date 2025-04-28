@@ -49,6 +49,29 @@ export default function Banner({packages}) {
     
     return () => clearInterval(interval);
   }, [currentIndex]);
+
+  // Improved navigation function to handle both hash and direct URL navigation
+  const navigateToSection = (sectionId) => {
+    try {
+      // First try to navigate to hash
+      window.location.hash = sectionId;
+      
+      // Also try to scroll to the element with that ID if it exists
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Close the mobile menu and reset dropdowns
+      setNavbarOpen(false);
+      setActiveDropdown(null);
+      setActiveSubDropdown(null);
+    } catch (error) {
+      console.error("Navigation error:", error);
+      // Fallback to simple hash change if there's an error
+      window.location.hash = sectionId;
+    }
+  };
   
   // Check if device is mobile/tablet
   useEffect(() => {
@@ -232,6 +255,7 @@ export default function Banner({packages}) {
             {/* Search Button - Only visible on mobile */}
             <button
               type="submit"
+              onClick={()=>navigateToSection('contact')}
               className="w-full md:hidden bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-md font-medium flex items-center justify-center gap-2 transition-colors"
             >
               <Search className="w-5 h-5" />
@@ -314,6 +338,7 @@ export default function Banner({packages}) {
             {/* Search Button - Only visible on mobile */}
             <button
               type="submit"
+              onClick={()=>navigateToSection('contact')}
               className="w-full md:hidden bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-md font-medium flex items-center justify-center gap-2 transition-colors"
             >
               <Search className="w-5 h-5" />
@@ -378,6 +403,7 @@ export default function Banner({packages}) {
             
             {/* Search Button - Only visible on mobile */}
             <button
+            onClick={()=>navigateToSection('contact')}
               type="submit"
               className="w-full md:hidden bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-md font-medium flex items-center justify-center gap-2 transition-colors"
             >
@@ -446,7 +472,7 @@ export default function Banner({packages}) {
             {/* Search Button - Only visible on desktop */}
             <div className="hidden md:flex justify-center mt-6">
               <button
-                onClick={handleSearch}
+              onClick={()=>navigateToSection('contact')}
                 className="bg-teal-500 hover:bg-teal-600 text-white py-3 px-10 rounded-md font-medium flex items-center justify-center gap-2 transition-colors"
               >
                 <Search className="w-5 h-5" />

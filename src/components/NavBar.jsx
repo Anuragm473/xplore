@@ -19,7 +19,7 @@ import {
 import { CalendarDays, Home, Building, FileText } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar({packages}) {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -41,69 +41,16 @@ export default function NavBar() {
       name: "Domestic",
       icon: <Home className="w-4 h-4" />,
       // Indian destinations for domestic travel
-      submenu: [
-        { name: "Goa", icon: <Compass className="w-4 h-4" /> },
-        { name: "Kashmir", icon: <Mountain className="w-4 h-4" /> },
-        { name: "Kerala", icon: <Compass className="w-4 h-4" /> },
-        { name: "Rajasthan", icon: <Landmark className="w-4 h-4" /> },
-        { name: "North East", icon: <Mountain className="w-4 h-4" /> },
-        { name: "Himachal Pradesh", icon: <Mountain className="w-4 h-4" /> },
-        { name: "Golden Triangle", icon: <Landmark className="w-4 h-4" /> },
-        { name: "Andaman & Nicobar", icon: <Compass className="w-4 h-4" /> },
-      ]
+      submenu:[...packages.local,...packages.fixesDeparture].map((el,index)=>{
+        return {name:el.destination,icon:index%2===0? <Compass className="w-4 h-4" />:<Mountain className="w-4 h-4" />}
+      })
     },
     {
       name: "International",
       icon: <Globe className="w-4 h-4" />,
-      submenu: [
-        {
-          name: "Asia",
-          icon: <Globe className="w-4 h-4" />,
-          submenu: [
-            { name: "Thailand", icon: <Compass className="w-4 h-4" /> },
-            { name: "Singapore", icon: <Building className="w-4 h-4" /> },
-            { name: "Japan", icon: <Landmark className="w-4 h-4" /> },
-            { name: "Bali", icon: <Compass className="w-4 h-4" /> },
-          ]
-        },
-        {
-          name: "Europe",
-          icon: <Globe className="w-4 h-4" />,
-          submenu: [
-            { name: "France", icon: <Landmark className="w-4 h-4" /> },
-            { name: "Italy", icon: <Landmark className="w-4 h-4" /> },
-            { name: "Switzerland", icon: <Mountain className="w-4 h-4" /> },
-            { name: "Spain", icon: <Compass className="w-4 h-4" /> },
-          ]
-        },
-        {
-          name: "North America",
-          icon: <Globe className="w-4 h-4" />,
-          submenu: [
-            { name: "USA", icon: <Landmark className="w-4 h-4" /> },
-            { name: "Canada", icon: <Mountain className="w-4 h-4" /> },
-            { name: "Mexico", icon: <Compass className="w-4 h-4" /> },
-          ]
-        },
-        {
-          name: "Middle East",
-          icon: <Globe className="w-4 h-4" />,
-          submenu: [
-            { name: "Dubai", icon: <Building className="w-4 h-4" /> },
-            { name: "Turkey", icon: <Landmark className="w-4 h-4" /> },
-            { name: "Egypt", icon: <Landmark className="w-4 h-4" /> },
-          ]
-        },
-        {
-          name: "Australia & Oceania",
-          icon: <Globe className="w-4 h-4" />,
-          submenu: [
-            { name: "Australia", icon: <Compass className="w-4 h-4" /> },
-            { name: "New Zealand", icon: <Mountain className="w-4 h-4" /> },
-            { name: "Fiji", icon: <Compass className="w-4 h-4" /> },
-          ]
-        },
-      ]
+      submenu: [...packages.international].map((el,index)=>{
+        return {name:el.destination,icon:index%2===0? <Compass className="w-4 h-4" />:<Mountain className="w-4 h-4" />}
+      })
     }
   ];
 
@@ -154,15 +101,27 @@ export default function NavBar() {
     setActiveSubDropdown(activeSubDropdown === index ? null : index);
   };
 
-  // Function to navigate to a section
+  // Improved navigation function to handle both hash and direct URL navigation
   const navigateToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    try {
+      // First try to navigate to hash
+      window.location.hash = sectionId;
+      
+      // Also try to scroll to the element with that ID if it exists
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Close the mobile menu and reset dropdowns
+      setNavbarOpen(false);
+      setActiveDropdown(null);
+      setActiveSubDropdown(null);
+    } catch (error) {
+      console.error("Navigation error:", error);
+      // Fallback to simple hash change if there's an error
+      window.location.hash = sectionId;
     }
-    setNavbarOpen(false);
-    setActiveDropdown(null);
-    setActiveSubDropdown(null);
   };
 
   return (
@@ -218,7 +177,7 @@ export default function NavBar() {
             {navLinks.map((link, index) => (
               <div key={index} className="relative group">
                 <motion.button
-                  onClick={() => (link.dropdown ? toggleDropdown(index) : navigateToSection('contact'))}
+                  onClick={() => link.dropdown ? toggleDropdown(index) : navigateToSection('contact')}
                   className={`flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${
                     isScrolled
                       ? "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
@@ -297,14 +256,10 @@ export default function NavBar() {
                                 transition={{ duration: 0.2 }}
                               >
                                 {item.submenu.map((subItem, j) => (
-                                  <motion.a
+                                  <motion.button
                                     key={j}
-                                    href="#packages"
-                                    className="flex items-center px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      navigateToSection('packages');
-                                    }}
+                                    className="flex items-center w-full px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
+                                    onClick={() => navigateToSection('packages')}
                                     initial={{ opacity: 0, x: -10 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.05 * j }}
@@ -313,7 +268,7 @@ export default function NavBar() {
                                       {subItem.icon}
                                     </span>
                                     {subItem.name}
-                                  </motion.a>
+                                  </motion.button>
                                 ))}
                               </motion.div>
                             )}
@@ -326,7 +281,6 @@ export default function NavBar() {
               </div>
             ))}
           </nav>
-
 
           {/* Mobile Menu Button with Animation */}
           <motion.button
@@ -425,7 +379,7 @@ export default function NavBar() {
                                   if (item.submenu) {
                                     toggleSubDropdown(i);
                                   } else {
-                                    navigateToSection('contact');
+                                    navigateToSection('contact'); // Redirect to contact if no submenu
                                   }
                                 }}
                                 className="flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
@@ -458,14 +412,11 @@ export default function NavBar() {
                                   transition={{ duration: 0.2 }}
                                 >
                                   {item.submenu.map((subItem, j) => (
-                                    <motion.a
+                                    <motion.button
                                       key={j}
-                                      href="#packages"
-                                      className="flex items-center px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        navigateToSection('packages');
-                                        setNavbarOpen(false);
+                                      className="flex items-center w-full px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
+                                      onClick={() => {
+                                        navigateToSection('packages'); // All destination subitems go to packages
                                       }}
                                       initial={{ opacity: 0, x: -10 }}
                                       animate={{ opacity: 1, x: 0 }}
@@ -475,7 +426,7 @@ export default function NavBar() {
                                         {subItem.icon}
                                       </span>
                                       {subItem.name}
-                                    </motion.a>
+                                    </motion.button>
                                   ))}
                                 </motion.div>
                               )}
@@ -497,7 +448,7 @@ export default function NavBar() {
                     className="flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full px-4 py-3 text-sm font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => navigateToSection('contact')}
+                    onClick={() => navigateToSection('contact')} // Book Now button goes to contact
                   >
                     <CalendarDays className="w-5 h-5 mr-2" />
                     Book Now

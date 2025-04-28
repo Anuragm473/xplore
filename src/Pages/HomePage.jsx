@@ -11,7 +11,7 @@ import Contact from './../components/Contact';
 import Footer from './../components/Footer';
 import CallToAction from './../components/CallToAction';
 
-const HomePage = ({setIsScrolled}) => {
+const HomePage = ({setIsScrolled,packages}) => {
   const [activeTab, setActiveTab] = useState('international');
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [currentDestination, setCurrentDestination] = useState(0);
@@ -19,54 +19,6 @@ const HomePage = ({setIsScrolled}) => {
   const [scrollY, setScrollY] = useState(0);
   const [activeSlide, setActiveSlide] = useState({});
   const [favorites, setFavorites] = useState([]);
-  const [packages, setPackages] = useState({
-    international: [],
-    local: [],
-    fixesDeparture: [],
-  });
-
-  useEffect(() => {
-    async function fetchApi() {
-      try {
-        const response = await fetch('https://xplore-backend-alpha.vercel.app/api');
-        const data = await response.json();
-
-        const categorizedPackages = {
-          international: [],
-          local: [],
-          fixesDeparture: [],
-        };
-        console.log(data)
-
-        data.packages.forEach(pkg => {
-          const formattedPackage = {
-            id: pkg.id, // using the virtual id
-            destination: pkg.destination,
-            images: pkg.images,
-            duration: pkg.duration,
-            price: pkg.price,
-            rating: pkg.rating,
-            description: pkg.description,
-          };
-
-          // categorize based on the `category` field
-          if (pkg.category === 'international') {
-            categorizedPackages.international.push(formattedPackage);
-          } else if (pkg.category === 'local') {
-            categorizedPackages.local.push(formattedPackage);
-          } else if (pkg.category === 'fixedDeparture') {
-            categorizedPackages.fixesDeparture.push(formattedPackage);
-          }
-        });
-
-        setPackages(categorizedPackages);
-      } catch (error) {
-        console.error('Error fetching packages:', error);
-      }
-    }
-
-    fetchApi();
-  }, []);
 
   // Handle mouse movement for parallax effect
   useEffect(() => {
