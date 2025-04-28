@@ -15,6 +15,13 @@ export default function CallToAction() {
     h2: 'text-4xl md:text-5xl font-bold tracking-tight',
     body: 'text-xl font-light leading-relaxed'
   };
+    // Function to navigate to a section
+    const navigateToSection = (sectionId) => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
 
   return (
     <section className="relative py-24 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 overflow-hidden">
@@ -82,6 +89,9 @@ export default function CallToAction() {
                 boxShadow: "0 4px 20px rgba(249, 115, 22, 0.5)"
               }}
               whileTap={{ scale: 0.95 }}
+              onClick={()=>{
+                navigateToSection("contact")
+              }}
               className="group relative px-10 py-5 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full font-semibold text-lg overflow-hidden"
             >
               <span className="relative z-10 flex items-center">

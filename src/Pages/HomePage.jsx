@@ -19,6 +19,54 @@ const HomePage = ({setIsScrolled}) => {
   const [scrollY, setScrollY] = useState(0);
   const [activeSlide, setActiveSlide] = useState({});
   const [favorites, setFavorites] = useState([]);
+  const [packages, setPackages] = useState({
+    international: [],
+    local: [],
+    fixesDeparture: [],
+  });
+
+  useEffect(() => {
+    async function fetchApi() {
+      try {
+        const response = await fetch('https://xplore-backend-alpha.vercel.app/api');
+        const data = await response.json();
+
+        const categorizedPackages = {
+          international: [],
+          local: [],
+          fixesDeparture: [],
+        };
+        console.log(data)
+
+        data.packages.forEach(pkg => {
+          const formattedPackage = {
+            id: pkg.id, // using the virtual id
+            destination: pkg.destination,
+            images: pkg.images,
+            duration: pkg.duration,
+            price: pkg.price,
+            rating: pkg.rating,
+            description: pkg.description,
+          };
+
+          // categorize based on the `category` field
+          if (pkg.category === 'international') {
+            categorizedPackages.international.push(formattedPackage);
+          } else if (pkg.category === 'local') {
+            categorizedPackages.local.push(formattedPackage);
+          } else if (pkg.category === 'fixedDeparture') {
+            categorizedPackages.fixesDeparture.push(formattedPackage);
+          }
+        });
+
+        setPackages(categorizedPackages);
+      } catch (error) {
+        console.error('Error fetching packages:', error);
+      }
+    }
+
+    fetchApi();
+  }, []);
 
   // Handle mouse movement for parallax effect
   useEffect(() => {
@@ -104,123 +152,6 @@ const HomePage = ({setIsScrolled}) => {
     setActiveSlide(initialSlides);
   }, []);
 
-  // Sample data for the app
-  const packages = {
-    international: [
-      {
-        id: 1,
-        destination: 'Paris, France',
-        images: ['paris.jpg', 'bali.webp', 'tokyo.jpg', 'paris.jpg', 'Santorini.jpg'],
-        duration: '7 Days',
-        price: '$1,599',
-        rating: 4.8,
-        description: 'Experience the romance and charm of the City of Lights'
-      },
-      {
-        id: 2,
-        destination: 'Bali, Indonesia',
-        images: ['bali.webp', 'paris.jpg', 'Santorini.jpg', 'tokyo.jpg', 'bali.webp'],
-        duration: '10 Days',
-        price: '$1,899',
-        rating: 4.9,
-        description: 'Tropical paradise with stunning beaches and rich culture'
-      },
-      {
-        id: 3,
-        destination: 'Tokyo, Japan',
-        images: ['tokyo.jpg', 'Santorini.jpg', 'paris.jpg', 'bali.webp', 'Santorini.jpg'],
-        duration: '8 Days',
-        price: '$2,199',
-        rating: 4.7,
-        description: 'Modern metropolis with ancient traditions and exquisite cuisine'
-      },
-      {
-        id: 4,
-        destination: 'Santorini, Greece',
-        images: ['Santorini.jpg', 'bali.webp', 'tokyo.jpg', 'paris.jpg', 'bali.webp'],
-        duration: '6 Days',
-        price: '$1,799',
-        rating: 4.8,
-        description: 'Breathtaking views and iconic white and blue architecture'
-      }
-    ],
-    local: [
-      {
-        id: 5,
-        destination: 'Grand Canyon',
-        images: ['GrandCanyon.jpg', 'tokyo.jpg', 'YellowstonePark.jpg', 'NewYorkCity.jpg', 'grandcanyon_sunset.jpg'],
-        duration: '3 Days',
-        price: '$699',
-        rating: 4.6,
-        description: 'Natural wonder with magnificent landscapes and hiking trails'
-      },
-      {
-        id: 6,
-        destination: 'Yellowstone Park',
-        images: ['YellowstonePark.jpg', 'yellowstone_geyser.jpg', 'GrandCanyon.jpg', 'yellowstone_lake.jpg', 'NewYorkCity.jpg'],
-        duration: '4 Days',
-        price: '$899',
-        rating: 4.7,
-        description: 'Iconic national park with geysers and diverse wildlife'
-      },
-      {
-        id: 7,
-        destination: 'New York City',
-        images: ['NewYorkCity.jpg', 'nyc_times_square.jpg', 'nyc_central_park.jpg', 'nyc_brooklyn.jpg', 'nyc_statue.jpg', 'nyc_skyline.jpg'],
-        duration: '5 Days',
-        price: '$1,299',
-        rating: 4.8,
-        description: 'The city that never sleeps with iconic landmarks and vibrant culture'
-      },
-      {
-        id: 8,
-        destination: 'Miami Beach',
-        images: ['MiamiBeach.jpg', 'miami_ocean.jpg', 'miami_nightlife.jpg', 'miami_art.jpg', 'miami_palm.jpg'],
-        duration: '4 Days',
-        price: '$999',
-        rating: 4.5,
-        description: 'Sun-soaked beaches and vibrant art deco district'
-      }
-    ],
-    fixesDeparture: [
-      {
-        id: 5,
-        destination: 'Grand Canyon',
-        images: ['GrandCanyon.jpg', 'grandcanyon_rim.jpg', 'grandcanyon_river.jpg', 'grandcanyon_hike.jpg', 'grandcanyon_sunset.jpg'],
-        duration: '3 Days',
-        price: '$699',
-        rating: 4.6,
-        description: 'Natural wonder with magnificent landscapes and hiking trails'
-      },
-      {
-        id: 6,
-        destination: 'Yellowstone Park',
-        images: ['YellowstonePark.jpg', 'yellowstone_geyser.jpg', 'yellowstone_wildlife.jpg', 'yellowstone_lake.jpg', 'yellowstone_forest.jpg'],
-        duration: '4 Days',
-        price: '$899',
-        rating: 4.7,
-        description: 'Iconic national park with geysers and diverse wildlife'
-      },
-      {
-        id: 7,
-        destination: 'New York City',
-        images: ['NewYorkCity.jpg', 'nyc_times_square.jpg', 'nyc_central_park.jpg', 'nyc_brooklyn.jpg', 'nyc_statue.jpg', 'nyc_skyline.jpg'],
-        duration: '5 Days',
-        price: '$1,299',
-        rating: 4.8,
-        description: 'The city that never sleeps with iconic landmarks and vibrant culture'
-      },
-      {
-        id: 8,
-        destination: 'Miami Beach',
-        images: ['MiamiBeach.jpg', 'miami_ocean.jpg', 'miami_nightlife.jpg', 'miami_art.jpg', 'miami_palm.jpg'],
-        duration: '4 Days',
-        price: '$999',
-        rating: 4.5,
-        description: 'Sun-soaked beaches and vibrant art deco district'
-      }
-    ]
-  };
 
   const featuredDestinations = [
     { 
@@ -351,7 +282,7 @@ const HomePage = ({setIsScrolled}) => {
 
         {/* Contact Section */}
         <section id="contact" aria-labelledby="contact-heading" className="bg-gray-50">
-          <Contact/>
+          <Contact packages={packages}/>
         </section>
       </main>
 

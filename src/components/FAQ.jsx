@@ -10,25 +10,33 @@ export default function FAQ() {
         setActiveFaq(activeFaq === index ? null : index);
     };
 
+      // Function to navigate to a section
+  const navigateToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
     const faqs = [
         { 
-            question: 'How do I book a tour package?', 
-            answer: 'Booking is simple! Browse our packages, select your preferred one, click "Book Now", fill in your details, and complete the payment process. You\'ll receive a confirmation email with all details.',
+            question: 'How do I book a tour package with Xplore World Tours?', 
+            answer: 'Booking is simple! Browse our domestic and international packages, select your preferred destination, click "Book Now", fill in your details, and complete the payment process. You\'ll receive a confirmation email with all details from our Thane office.',
             icon: <Globe className="w-5 h-5 text-amber-600" />
         },
         { 
             question: 'What is your cancellation policy?', 
-            answer: 'We offer free cancellation up to 30 days before your trip. Cancellations made 15-29 days prior receive a 50% refund. Cancellations less than 15 days before departure are non-refundable.',
+            answer: 'We offer free cancellation up to 30 days before your trip. Cancellations made 15-29 days prior receive a 50% refund. Cancellations less than 15 days before departure are non-refundable. We recommend our comprehensive Travel Insurance plans for added protection.',
             icon: <Shield className="w-5 h-5 text-amber-600" />
         },
         { 
-            question: 'Are flights included in the packages?', 
-            answer: 'International packages include round-trip flights from major cities. Local packages do not include flights unless specifically mentioned in the package details.',
+            question: 'Are flights included in your tour packages?', 
+            answer: 'Our international packages to destinations like Singapore, Vietnam, Bali, and Europe include round-trip flights from major Indian cities. Domestic packages may not include flights unless specifically mentioned. We also offer competitive Flight Bookings as a standalone service.',
             icon: <Calendar className="w-5 h-5 text-amber-600" />
         },
         { 
             question: 'Do you offer customized tour packages?', 
-            answer: 'Yes! We specialize in creating custom itineraries. Contact us through the form or call us directly to discuss your dream vacation and we\'ll design a personalized experience.',
+            answer: 'Absolutely! Since our founding in 2016, personalized service has been our specialty. Our travel experts can create custom itineraries tailored to your preferences, whether it\'s a beach getaway, mountain trek, or cultural expedition. Contact us to discuss your dream vacation.',
             icon: <PenTool className="w-5 h-5 text-amber-600" />
         }
     ];
@@ -87,7 +95,7 @@ export default function FAQ() {
                         viewport={{ once: true }}
                         className={`${typography.body} text-gray-600 max-w-2xl mx-auto`}
                     >
-                        Get answers to common questions about our tours and booking process.
+                        Get answers to common questions about our travel services and booking process at Xplore World Tours & Travels.
                     </motion.p>
                 </motion.div>
 
@@ -176,12 +184,15 @@ export default function FAQ() {
                     className="mt-16 text-center"
                 >
                     <p className={`${typography.body} text-gray-600 mb-6`}>
-                        Still have questions? Our travel experts are here to help!
+                        Still have questions? Our travel experts are here to help you discover the world, your way!
                     </p>
                     <motion.button
                         whileHover={{ 
                             scale: 1.05,
                             boxShadow: `0 0 20px ${colors.primary}40`
+                        }}
+                        onClick={()=>{
+                            navigateToSection('contact')
                         }}
                         whileTap={{ scale: 0.95 }}
                         className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-full font-medium hover:from-amber-600 hover:to-amber-700 transition-all duration-300 flex items-center mx-auto"

@@ -186,11 +186,11 @@ export default function Footer() {
             <div className="mt-6 space-y-2">
               <div className="flex items-center text-slate-400">
                 <Phone className="w-4 h-4 text-amber-500 mr-2" />
-                <span className={`${typography.small}`}>+1 (555) 123-4567</span>
+                <span className={`${typography.small}`}>+91 9819475680</span>
               </div>
               <div className="flex items-center text-slate-400">
                 <Mail className="w-4 h-4 text-amber-500 mr-2" />
-                <span className={`${typography.small}`}>info@xplore-travel.com</span>
+                <span className={`${typography.small}`}>info@xploreworld.in</span>
               </div>
             </div>
           </motion.div>

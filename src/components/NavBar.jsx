@@ -110,13 +110,13 @@ export default function NavBar() {
   const navLinks = [
     {
       name: "Destinations",
-      href: "#destinations",
+      href: "#contact",
       icon: <MapPin className="w-4 h-4" />,
       dropdown: topLevelDestinations,
     },
     {
       name: "Visa Services",
-      href: "visa",
+      href: "#contact",
       icon: <FileText className="w-4 h-4" />,
       dropdown: [
         { name: "Tourist Visa", icon: <Plane className="w-4 h-4" /> },
@@ -130,17 +130,17 @@ export default function NavBar() {
     },
     {
       name: "Special Offers",
-      href: "offers",
+      href: "#contact",
       icon: <Star className="w-4 h-4" />,
     },
     { 
       name: "About Us", 
-      href: "about", 
+      href: "#contact", 
       icon: <User className="w-4 h-4" /> 
     },
     { 
       name: "Contact", 
-      href: "contact", 
+      href: "#contact", 
       icon: <Phone className="w-4 h-4" /> 
     },
   ];
@@ -152,6 +152,17 @@ export default function NavBar() {
 
   const toggleSubDropdown = (index) => {
     setActiveSubDropdown(activeSubDropdown === index ? null : index);
+  };
+
+  // Function to navigate to a section
+  const navigateToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setNavbarOpen(false);
+    setActiveDropdown(null);
+    setActiveSubDropdown(null);
   };
 
   return (
@@ -169,6 +180,10 @@ export default function NavBar() {
             href="#"
             className="flex items-center group"
             whileHover={{ scale: 1.05 }}
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
           >
             <div
               className={`relative transition-all duration-500 flex items-center justify-center ${
@@ -192,7 +207,6 @@ export default function NavBar() {
               className={`text-2xl font-bold tracking-tight ${
                 isScrolled ? "text-gray-800" : "text-gray-900"
               } transition-colors duration-500 ml-2`}
-              onClick={() => navigate("/")}
             >
               <span className="text-orange-500">Xplore </span>
               <span className="font-light">World</span>
@@ -204,7 +218,7 @@ export default function NavBar() {
             {navLinks.map((link, index) => (
               <div key={index} className="relative group">
                 <motion.button
-                  onClick={() => (link.dropdown ? toggleDropdown(index) : null)}
+                  onClick={() => (link.dropdown ? toggleDropdown(index) : navigateToSection('contact'))}
                   className={`flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${
                     isScrolled
                       ? "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
@@ -250,8 +264,7 @@ export default function NavBar() {
                                 if (item.submenu) {
                                   toggleSubDropdown(i);
                                 } else {
-                                  navigate(link.href);
-                                  setActiveDropdown(null);
+                                  navigateToSection('contact');
                                 }
                               }}
                               className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg transition-colors ${
@@ -286,11 +299,11 @@ export default function NavBar() {
                                 {item.submenu.map((subItem, j) => (
                                   <motion.a
                                     key={j}
-                                    href={`/destinations/${item.name.toLowerCase()}/${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}
+                                    href="#packages"
                                     className="flex items-center px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
-                                    onClick={() => {
-                                      setActiveDropdown(null);
-                                      setActiveSubDropdown(null);
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      navigateToSection('packages');
                                     }}
                                     initial={{ opacity: 0, x: -10 }}
                                     animate={{ opacity: 1, x: 0 }}
@@ -314,59 +327,6 @@ export default function NavBar() {
             ))}
           </nav>
 
-          {/* CTA Buttons with Animation */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <motion.div
-              className={`relative transition-all duration-300 ${
-                isScrolled ? "bg-gray-100" : "bg-white/80"
-              } rounded-full group ${
-                searchFocused ? "ring-2 ring-blue-400" : ""
-              }`}
-              whileHover={{ scale: 1.05 }}
-            >
-              <input
-                type="text"
-                placeholder="Where to next?"
-                className={`py-2 pl-10 pr-4 rounded-full text-sm focus:outline-none ${
-                  isScrolled
-                    ? "bg-gray-100 placeholder-gray-500"
-                    : "bg-transparent text-gray-800 placeholder-gray-500"
-                } w-48 transition-all duration-300`}
-                onFocus={() => setSearchFocused(true)}
-                onBlur={() => setSearchFocused(false)}
-              />
-              <Search
-                className={`absolute left-3 top-2.5 w-4 h-4 transition-colors ${
-                  isScrolled
-                    ? "text-gray-500 group-hover:text-blue-600"
-                    : "text-gray-500 group-hover:text-blue-600"
-                }`}
-              />
-            </motion.div>
-
-            <motion.button
-              className={`flex items-center ${
-                isScrolled
-                  ? "bg-transparent text-blue-600 hover:bg-blue-600/10"
-                  : "bg-transparent text-blue-700 hover:bg-blue-100"
-              } rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 hover:shadow-sm`}
-              whileHover={{ scale: 1.05 }}
-            >
-              <User className="w-4 h-4 mr-2" />
-              Sign In
-            </motion.button>
-            <motion.button
-              className="flex items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full px-5 py-2.5 text-sm font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 group"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <CalendarDays className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
-              <span className="relative">
-                Book Now
-                <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-white/80 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-              </span>
-            </motion.button>
-          </div>
 
           {/* Mobile Menu Button with Animation */}
           <motion.button
@@ -431,7 +391,7 @@ export default function NavBar() {
                         onClick={() =>
                           link.dropdown
                             ? toggleDropdown(index)
-                            : setNavbarOpen(false)
+                            : navigateToSection('contact')
                         }
                         className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-gray-800 hover:bg-blue-50 transition-colors"
                       >
@@ -465,8 +425,7 @@ export default function NavBar() {
                                   if (item.submenu) {
                                     toggleSubDropdown(i);
                                   } else {
-                                    navigate(link.href);
-                                    setNavbarOpen(false);
+                                    navigateToSection('contact');
                                   }
                                 }}
                                 className="flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
@@ -501,9 +460,13 @@ export default function NavBar() {
                                   {item.submenu.map((subItem, j) => (
                                     <motion.a
                                       key={j}
-                                      href={`/destinations/${item.name.toLowerCase()}/${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}
+                                      href="#packages"
                                       className="flex items-center px-3 py-2 text-sm rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors"
-                                      onClick={() => setNavbarOpen(false)}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        navigateToSection('packages');
+                                        setNavbarOpen(false);
+                                      }}
                                       initial={{ opacity: 0, x: -10 }}
                                       animate={{ opacity: 1, x: 0 }}
                                       transition={{ delay: 0.05 * j }}
@@ -531,17 +494,10 @@ export default function NavBar() {
                   transition={{ delay: 0.3 }}
                 >
                   <motion.button
-                    className="flex items-center justify-center border border-blue-500 text-blue-600 rounded-full px-4 py-3 text-sm font-medium hover:bg-blue-50 transition-colors"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <User className="w-5 h-5 mr-2" />
-                    Sign In
-                  </motion.button>
-                  <motion.button
                     className="flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full px-4 py-3 text-sm font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={() => navigateToSection('contact')}
                   >
                     <CalendarDays className="w-5 h-5 mr-2" />
                     Book Now

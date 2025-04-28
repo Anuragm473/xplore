@@ -1,8 +1,25 @@
 import { Clock, Mail, PhoneCall, MapPin, Send, Globe } from 'lucide-react';
-import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-export default function Contact() {
+export default function Contact({packages}) {
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    packageOfInterest: '',
+    message: '',
+    visaType: ''
+  });
+  
+  // Form status state
+  const [status, setStatus] = useState({
+    submitting: false,
+    success: false,
+    error: null
+  });
+
   // Design system constants - updated for light mode
   const colors = {
     primary: '#F59E0B',    // Amber-500
@@ -19,30 +36,96 @@ export default function Contact() {
     small: 'text-sm font-medium'
   };
 
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus({ submitting: true, success: false, error: null });
+    
+    try {
+      const response = await fetch('https://xplore-backend-alpha.vercel.app/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          packageOfInterest: formData.packageOfInterest,
+          message: formData.message,
+          visaType: formData.visaType
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong');
+      }
+      
+      // Reset form on success
+      setFormData({
+        name: '',
+        email: '',
+        packageOfInterest: '',
+        message: '',
+        visaType: ''
+      });
+      
+      setStatus({
+        submitting: false,
+        success: true,
+        error: null
+      });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setStatus(prev => ({ ...prev, success: false }));
+      }, 5000);
+      
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setStatus({
+        submitting: false,
+        success: false,
+        error: error.message || 'Failed to submit the form. Please try again.'
+      });
+    }
+  };
+
+  useEffect(() => {
+    // Check if map is already initialized
+    if (document.getElementById('map') && !document.getElementById('map')._leaflet_id) {
+      const map = L.map('map').setView([19.287835, 72.8561723], 13); // Mumbai coords
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Add marker
+      L.marker([19.287835, 72.8561723]).addTo(map)
+        .bindPopup('Xplore World Tours and Travels')
+        .openPopup();
+    }
+  }, []);
+
   return (
     <section className="relative py-20 bg-gradient-to-b from-sky-50 to-slate-100 overflow-hidden" id="contact">
       {/* Decorative elements */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.1 }}
-        className="absolute top-1/4 left-20 w-48 h-48 rounded-full bg-amber-400/30 blur-xl"
-      />
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.1 }}
-        transition={{ delay: 0.3 }}
-        className="absolute bottom-1/3 right-32 w-64 h-64 rounded-full bg-teal-400/30 blur-xl"
-      />
+      <div className="absolute top-1/4 left-20 w-48 h-48 rounded-full bg-amber-400/30 blur-xl opacity-10" />
+      <div className="absolute bottom-1/3 right-32 w-64 h-64 rounded-full bg-teal-400/30 blur-xl opacity-10" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <div className="inline-flex items-center mb-6 bg-white/70 px-5 py-3 rounded-full backdrop-blur-sm border border-slate-200">
             <Globe className="w-5 h-5 text-amber-500 mr-2" />
             <span className={`${typography.small} text-slate-600`}>WE'RE HERE TO HELP</span>
@@ -52,27 +135,15 @@ export default function Contact() {
             Get in <span className="bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">Touch</span>
           </h2>
           
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            viewport={{ once: true }}
-            className={`${typography.body} text-slate-600 max-w-2xl mx-auto`}
-          >
+          <p className={`${typography.body} text-slate-600 max-w-2xl mx-auto`}>
             Have questions or ready to book? Reach out to our friendly team for personalized assistance.
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* Contact Content */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
           {/* Contact Information */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="lg:col-span-2 space-y-8"
-          >
+          <div className="lg:col-span-2 space-y-8">
             <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-200 shadow-lg">
               <h3 className={`${typography.h3} text-slate-800 mb-6 flex items-center`}>
                 <span className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center mr-3">
@@ -82,56 +153,52 @@ export default function Contact() {
               </h3>
               
               <div className="space-y-6">
-                <motion.div 
-                  whileHover={{ x: 5 }}
-                  className="flex items-start group"
-                >
+                <div className="flex items-start group hover:translate-x-1 transition-transform">
                   <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mr-4 border border-slate-200 group-hover:bg-amber-500/10 transition-colors">
                     <PhoneCall className="w-5 h-5 text-amber-600 group-hover:text-amber-700" />
                   </div>
                   <div>
                     <p className="font-medium text-slate-700">Phone</p>
-                    <p className="text-slate-600 group-hover:text-amber-600 transition-colors">+1 (555) 123-4567</p>
+                    <a 
+                      href="tel:+919819475680" 
+                      className="text-slate-600 group-hover:text-amber-600 transition-colors inline-flex items-center"
+                    >
+                      +91 9819475680
+                      <span className="ml-2 text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">Click to call</span>
+                    </a>
                   </div>
-                </motion.div>
+                </div>
                 
-                <motion.div 
-                  whileHover={{ x: 5 }}
-                  className="flex items-start group"
-                >
+                <div className="flex items-start group hover:translate-x-1 transition-transform">
                   <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mr-4 border border-slate-200 group-hover:bg-amber-500/10 transition-colors">
                     <Mail className="w-5 h-5 text-amber-600 group-hover:text-amber-700" />
                   </div>
                   <div>
                     <p className="font-medium text-slate-700">Email</p>
-                    <p className="text-slate-600 group-hover:text-amber-600 transition-colors">info@xplore-travel.com</p>
+                    <a 
+                      href="mailto:info@xploreworld.in" 
+                      className="text-slate-600 group-hover:text-amber-600 transition-colors inline-flex items-center"
+                    >
+                      info@xploreworld.in
+                      <span className="ml-2 text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">Click to email</span>
+                    </a>
                   </div>
-                </motion.div>
+                </div>
                 
-                <motion.div 
-                  whileHover={{ x: 5 }}
-                  className="flex items-start group"
-                >
+                <div className="flex items-start group hover:translate-x-1 transition-transform">
                   <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mr-4 border border-slate-200 group-hover:bg-amber-500/10 transition-colors">
                     <Clock className="w-5 h-5 text-amber-600 group-hover:text-amber-700" />
                   </div>
                   <div>
                     <p className="font-medium text-slate-700">Business Hours</p>
-                    <p className="text-slate-600 group-hover:text-amber-600 transition-colors">Monday-Friday: 9AM-6PM EST</p>
-                    <p className="text-slate-600 group-hover:text-amber-600 transition-colors">Saturday: 10AM-4PM EST</p>
+                    <p className="text-slate-600 group-hover:text-amber-600 transition-colors">Monday-Sunday: 10AM-9PM EST</p>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
             
-            {/* Location */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              viewport={{ once: true }}
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-200 shadow-lg"
-            >
+            {/* Location with Leaflet Map */}
+            <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-200 shadow-lg">
               <h3 className={`${typography.h3} text-slate-800 mb-6 flex items-center`}>
                 <span className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center mr-3">
                   <MapPin className="w-4 h-4 text-amber-600" />
@@ -139,123 +206,123 @@ export default function Contact() {
                 Our Location
               </h3>
               
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="relative rounded-xl w-full h-48 overflow-hidden border-2 border-slate-200"
-              >
-                <img 
-                  src="xplore.png" 
-                  alt="Map location" 
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-50/70 to-transparent" />
+              <div className="relative rounded-xl w-full h-48 overflow-hidden border-2 border-slate-200">
+                {/* Leaflet map container */}
+                <div id="map" className="w-full h-full"></div>
+                
                 <div className="absolute bottom-4 left-4">
                   <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full">
-                    <p className="text-slate-700 text-sm">123 Travel Street, Suite 100</p>
-                    <p className="text-slate-700 text-sm">Miami, FL 33101</p>
+                    <p className="text-slate-700 text-sm">Xplore World Tours and Travels</p>
+                    <a href="tel:+919819475680" className="text-slate-700 text-sm hover:text-amber-600 transition-colors">+91 9819475680</a>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+              </div>
+              
+              <p className="text-sm text-slate-600 mt-4">
+                B-202, Gulistan Society, Building No.5, Pooja Nagar, Mira Road East, Thane-401107, Maharashtra.
+              </p>
+            </div>
+          </div>
           
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="lg:col-span-3"
-          >
+          <div className="lg:col-span-3">
             <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-200 shadow-lg h-full">
-            <h3 className={`${typography.h3} text-slate-800 mb-8`}>Send Us a Message</h3>
-            
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-slate-700 mb-2">Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700 placeholder-slate-400" 
-                    placeholder="Your name"
-                  />
+              <h3 className={`${typography.h3} text-slate-800 mb-8`}>Send Us a Message</h3>
+              
+              {status.success && (
+                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
+                  Your message has been sent successfully! We'll get back to you soon.
                 </div>
-                <div>
-                  <label htmlFor="email" className="block text-slate-700 mb-2">Email</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700 placeholder-slate-400" 
-                    placeholder="Your email"
-                  />
+              )}
+              
+              {status.error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+                  {status.error}
                 </div>
-              </div>
+              )}
               
-              <div>
-                <label htmlFor="package" className="block text-slate-700 mb-2">Package of Interest</label>
-                <select 
-                  id="package" 
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700"
+              <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-slate-700 mb-2">Name</label>
+                    <input 
+                      type="text" 
+                      id="name" 
+                      className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700 placeholder-slate-400" 
+                      placeholder="Your name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-slate-700 mb-2">Email</label>
+                    <input 
+                      type="email" 
+                      id="email" 
+                      className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700 placeholder-slate-400" 
+                      placeholder="Your email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="packageOfInterest" className="block text-slate-700 mb-2">Package of Interest</label>
+                  <select 
+                    id="packageOfInterest" 
+                    className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700"
+                    value={formData.packageOfInterest}
+                    onChange={handleChange}
+                  >
+                    <option value="" className="text-slate-400">Select a package</option>
+                    {[...packages.international,...packages.local,...packages.fixesDeparture].map(el=><option value="paris" className="text-slate-700">{el.destination}</option>)}
+                    
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="message" className="block text-slate-700 mb-2">Message</label>
+                  <textarea 
+                    id="message" 
+                    rows="5" 
+                    className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700 placeholder-slate-400" 
+                    placeholder="Tell us about your travel plans..."
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                  ></textarea>
+                </div>
+                
+                {/* Simplified Visa Type Options */}
+                <div>
+                  <label htmlFor="visaType" className="block text-slate-700 mb-2">Visa Type Required</label>
+                  <select 
+                    id="visaType" 
+                    className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700"
+                    value={formData.visaType}
+                    onChange={handleChange}
+                  >
+                    <option value="" className="text-slate-400">Select visa type (if needed)</option>
+                    <option value="tourist" className="text-slate-700">Tourist Visa</option>
+                    <option value="business" className="text-slate-700">Business Visa</option>
+                  </select>
+                </div>
+                
+                <button 
+                  type="submit"
+                  disabled={status.submitting}
+                  className={`w-full py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center group
+                    ${status.submitting ? 'opacity-70 cursor-not-allowed' : 'hover:from-amber-600 hover:to-amber-700'}`}
                 >
-                  <option value="" className="text-slate-400">Select a package</option>
-                  <option value="paris" className="text-slate-700">Paris, France</option>
-                  <option value="bali" className="text-slate-700">Bali, Indonesia</option>
-                  <option value="tokyo" className="text-slate-700">Tokyo, Japan</option>
-                  <option value="santorini" className="text-slate-700">Santorini, Greece</option>
-                  <option value="grand-canyon" className="text-slate-700">Grand Canyon</option>
-                  <option value="yellowstone" className="text-slate-700">Yellowstone Park</option>
-                  <option value="new-york" className="text-slate-700">New York City</option>
-                  <option value="miami" className="text-slate-700">Miami Beach</option>
-                  <option value="custom" className="text-slate-700">Custom Package</option>
-                </select>
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-slate-700 mb-2">Message</label>
-                <textarea 
-                  id="message" 
-                  rows="5" 
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700 placeholder-slate-400" 
-                  placeholder="Tell us about your travel plans..."
-                ></textarea>
-              </div>
-              
-              {/* Visa Country Select Dropdown */}
-              <div>
-                <label htmlFor="visa-country" className="block text-slate-700 mb-2">Visa Services Required</label>
-                <select 
-                  id="visa-country" 
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-slate-700"
-                >
-                  <option value="" className="text-slate-400">Select visa services (if needed)</option>
-                  <option value="usa" className="text-slate-700">USA - ₹3,000</option>
-                  <option value="uk" className="text-slate-700">UK - ₹2,000</option>
-                  <option value="schengen" className="text-slate-700">Schengen - ₹1,800</option>
-                  <option value="canada" className="text-slate-700">Canada - ₹2,500</option>
-                  <option value="australia" className="text-slate-700">Australia - ₹2,200</option>
-                  <option value="japan" className="text-slate-700">Japan - ₹1,500</option>
-                  <option value="singapore" className="text-slate-700">Singapore - ₹1,200</option>
-                  <option value="dubai" className="text-slate-700">Dubai/UAE - ₹1,000</option>
-                  <option value="thailand" className="text-slate-700">Thailand - ₹800</option>
-                  <option value="other" className="text-slate-700">Other (please specify in message)</option>
-                </select>
-              </div>
-              
-              <motion.button 
-                whileHover={{ 
-                  scale: 1.02,
-                  boxShadow: `0 0 20px ${colors.primary}40`
-                }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-xl font-medium hover:from-amber-600 hover:to-amber-700 transition-all duration-300 flex items-center justify-center group"
-              >
-                Send Message
-                <Send className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-              </motion.button>
-            </form>
+                  {status.submitting ? 'Sending...' : 'Send Message'}
+                  <Send className={`w-5 h-5 ml-2 ${status.submitting ? '' : 'group-hover:translate-x-1 transition-transform duration-300'}`} />
+                </button>
+              </form>
+            </div>
           </div>
-          </motion.div>
         </div>
       </div>
     </section>
