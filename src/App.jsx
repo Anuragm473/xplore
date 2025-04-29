@@ -33,6 +33,7 @@ export default function AppLayout() {
                 images: pkg.images,
                 duration: pkg.duration,
                 price: pkg.price,
+                pax:pkg.pax,
                 rating: pkg.rating,
                 description: pkg.description,
               };
