@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Calendar, Star, ChevronRight, Heart, ArrowRight, ChevronLeft, MapPin, Compass,Globe } from 'lucide-react';
+import { Calendar, Star, ChevronRight, Heart, ArrowRight, ChevronLeft, MapPin, Compass,Globe, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from './Image';
 
