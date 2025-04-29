@@ -45,7 +45,7 @@ export default function Footer() {
           >
             <div className="flex items-center mb-6">
               <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center mr-3">
-                <Globe className="w-5 h-5 text-amber-500" />
+                <img className="w-5 h-5 text-amber-500" src="../logo.png"/>
               </div>
               <h3 className={`${typography.h3} text-slate-50`}>Xplore World</h3>
             </div>
@@ -59,7 +59,7 @@ export default function Footer() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1 * index }}
                   whileHover={{ y: -3, backgroundColor: colors.primary }}
-                  href="#"
+                  href={social=="instagram"?"https://www.instagram.com/xploreworld.in":social=="facebook"?"https://www.facebook.com/xploreworld.in/":"https://www.justdial.com/Thane/Xplore-World-Tours-and-Travels-Near-JANTA-DAIRY-Mira-Road-East/022PXX22-XX22-160503220003-L6P5_BZDET"}
                   className="w-10 h-10 rounded-full bg-slate-800/50 backdrop-blur-sm flex items-center justify-center border border-slate-700/50 text-slate-300 hover:text-slate-900 transition-all"
                 >
                   <span className="sr-only">{social}</span>

@@ -149,17 +149,19 @@ export default function NavBar({packages}) {
                 isScrolled ? "w-8 h-8" : "w-10 h-10"
               }`}
             >
-              <Globe
-                className={`absolute transition-all duration-500 group-hover:opacity-0 group-hover:scale-90 ${
+              <img
+                className={`absolute transition-all pt-7 duration-500 group-hover:opacity-0 group-hover:scale-90 ${
                   isScrolled ? "text-blue-600" : "text-blue-700"
                 }`}
                 size={isScrolled ? 28 : 32}
+                src="../image.png"
               />
-              <Luggage
+              <img
                 className={`absolute transition-all duration-500 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 ${
                   isScrolled ? "text-orange-500" : "text-orange-600"
                 }`}
                 size={isScrolled ? 28 : 32}
+                src="../logo1.jfif"
               />
             </div>
             <span
