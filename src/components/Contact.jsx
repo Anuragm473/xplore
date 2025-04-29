@@ -278,7 +278,7 @@ export default function Contact({packages}) {
                     onChange={handleChange}
                   >
                     <option value="" className="text-slate-400">Select a package</option>
-                    {[...packages.international,...packages.local,...packages.fixesDeparture].map(el=><option value="paris" className="text-slate-700">{el.destination}</option>)}
+                    {[...packages.international,...packages.local,...packages.fixesDeparture].map(el=><option value={el.destination} className="text-slate-700">{el.destination}</option>)}
                     
                   </select>
                 </div>
