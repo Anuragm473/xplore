@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, Heart, Star } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import {motion} from 'framer-motion'
 
 export default function Image({ favorites, toggleFavorite, pkg }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -34,6 +35,15 @@ export default function Image({ favorites, toggleFavorite, pkg }) {
         className="w-full h-full object-cover transition-transform duration-500"
         alt={pkg.destination}
       />
+      {/* {pkg.fixedDeparture && (
+        <motion.div 
+          initial={{ x: -100 }}
+          animate={{ x: 0 }}
+          className="absolute top-4 left-0 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-3 py-1 rounded-r-full text-xs font-medium shadow-md flex items-center"
+        >
+          <span>Special Offer</span>
+        </motion.div>
+      )} */}
       
       {/* Navigation arrows */}
       <button 
