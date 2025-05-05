@@ -150,11 +150,11 @@ export default function NavBar({packages}) {
               }`}
             >
               <img
-                className={`absolute transition-all pt-7 duration-500 group-hover:opacity-0 group-hover:scale-90 ${
-                  isScrolled ? "text-blue-600" : "text-blue-700"
+                className={`absolute transition-all duration-500 scale-90 opacity-100 group-hover:scale-100 ${
+                  isScrolled ? "text-orange-600" : "text-orange-600"
                 }`}
                 size={isScrolled ? 28 : 32}
-                src="../image.png"
+                src="../logo1.jfif"
               />
               <img
                 className={`absolute transition-all duration-500 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 ${
