@@ -24,7 +24,7 @@ export default function AppLayout() {
               local: [],
               fixesDeparture: [],
             };
-            console.log(data)
+
     
             data.packages.forEach(pkg => {
               const formattedPackage = {
@@ -33,6 +33,7 @@ export default function AppLayout() {
                 images: pkg.images,
                 duration: pkg.duration,
                 price: pkg.price,
+                valid:pkg.valid,
                 fixedDeparture:pkg?.fixedDeparture,
                 pax:pkg.pax,
                 rating: pkg.rating,

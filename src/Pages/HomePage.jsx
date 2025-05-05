@@ -19,7 +19,6 @@ const HomePage = ({setIsScrolled,packages}) => {
   const [scrollY, setScrollY] = useState(0);
   const [activeSlide, setActiveSlide] = useState({});
   const [favorites, setFavorites] = useState([]);
-
   // Handle mouse movement for parallax effect
   useEffect(() => {
     const handleMouseMove = (e) => {

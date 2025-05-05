@@ -362,7 +362,6 @@ export default function TourDetailsPage() {
   const handleGuestsChange = (e) => {
     setSelectedGuests(parseInt(e.target.value));
   };
-  console.log(tour.images);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-16">

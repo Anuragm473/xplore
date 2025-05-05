@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Calendar, Star, ChevronRight, Heart, ArrowRight, ChevronLeft, MapPin, Compass, Globe, Users, X } from 'lucide-react';
+import { Calendar, Star, ChevronRight, Heart, ArrowRight, ChevronLeft, MapPin, Compass, Globe, Users, X, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from './Image';
 
@@ -173,7 +173,7 @@ export default function Package({ activeTab, setActiveTab, packages, activeSlide
                   ))}
                 </div>
                 
-                <div className="flex justify-between items-center mb-5">
+                <div className="flex justify-between items-center mb-3">
                   <div>
                     <div className="flex items-center text-slate-600 mb-1">
                       <Calendar className="w-5 h-5 mr-2 text-amber-500" />
@@ -191,6 +191,14 @@ export default function Package({ activeTab, setActiveTab, packages, activeSlide
                     <span className="font-bold text-amber-500 text-xl">{pkg.price}</span>
                   </div>
                 </div>
+
+                {/* Valid Until Field */}
+                {pkg?.valid && (
+                  <div className="flex items-center bg-green-50 px-3 py-2 rounded-lg mb-4">
+                    <Clock className="w-4 h-4 text-green-600 mr-2" />
+                    <span className="text-sm text-green-700">Valid until: {pkg.valid}</span>
+                  </div>
+                )}
 
                 {/* Button Group */}
                 <div className="grid grid-cols-2 gap-3">
@@ -298,6 +306,14 @@ export default function Package({ activeTab, setActiveTab, packages, activeSlide
                     <div className="flex items-center bg-blue-50 px-3 py-2 rounded-full">
                       <Star className="w-5 h-5 text-amber-500 fill-amber-500 mr-2" />
                       <span className="font-medium text-slate-700">{selectedPackage.rating}</span>
+                    </div>
+                  )}
+                  
+                  {/* Valid Until Badge in Modal */}
+                  {selectedPackage?.valid && (
+                    <div className="flex items-center bg-green-50 px-3 py-2 rounded-full">
+                      <Clock className="w-5 h-5 text-green-600 mr-2" />
+                      <span className="font-medium text-slate-700">Valid until: {selectedPackage.valid}</span>
                     </div>
                   )}
                   

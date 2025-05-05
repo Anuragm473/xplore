@@ -129,7 +129,7 @@ export default function NavBar({packages}) {
       className={`fixed w-full z-50 transition-all duration-500 ${
         isScrolled
           ? "bg-white shadow-md py-2 border-b border-gray-100"
-          : "bg-sky-50 py-4"
+          : "bg-white py-4"
       }`}
     >
       <div className="container mx-auto px-4 lg:px-8">
@@ -146,14 +146,14 @@ export default function NavBar({packages}) {
           >
             <div
               className={`relative transition-all duration-500 flex items-center justify-center ${
-                isScrolled ? "w-8 h-8" : "w-10 h-10"
+                isScrolled ? "w-12 h-12" : "w-14 h-14"
               }`}
             >
               <img
                 className={`absolute transition-all duration-500 scale-90 opacity-100 group-hover:scale-100 ${
                   isScrolled ? "text-orange-600" : "text-orange-600"
                 }`}
-                size={isScrolled ? 28 : 32}
+                size={isScrolled ? 20 : 24}
                 src="../logo1.jfif"
               />
               <img
@@ -165,7 +165,7 @@ export default function NavBar({packages}) {
               />
             </div>
             <span
-              className={`text-2xl font-bold tracking-tight ${
+              className={`text-4xl font-bold tracking-tight ${
                 isScrolled ? "text-gray-800" : "text-gray-900"
               } transition-colors duration-500 ml-2`}
             >
