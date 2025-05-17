@@ -325,7 +325,12 @@ export default function Package({ activeTab, setActiveTab, packages, activeSlide
                 
                 <div className="mb-8">
                   <h4 className="text-xl font-semibold text-slate-800 mb-3">Description</h4>
-                  <p className="text-slate-600 leading-relaxed mb-6">{selectedPackage.description}</p>
+                  {selectedPackage.description.split('\n').map((line, idx) => (
+  <p key={idx} className={`${typography.small} text-slate-600 mb-1`}>
+    {line}
+  </p>
+))}
+
                   
                   {selectedPackage.highlights && selectedPackage.highlights.length > 0 && (
                     <>
