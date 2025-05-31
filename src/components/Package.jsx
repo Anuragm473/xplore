@@ -75,30 +75,46 @@ export default function Package({ activeTab, setActiveTab, packages, activeSlide
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="inline-flex rounded-full p-1 bg-white shadow-md border border-slate-200 w-full md:w-auto"
+            className="inline-flex rounded-2xl p-1 bg-white shadow-md border border-slate-200 w-full md:w-auto"
           >
-            <div className="flex justify-between w-full md:flex-nowrap md:overflow-x-auto md:no-scrollbar md:space-x-2">
-              {['international', 'local', 'fixesDeparture'].map((tab) => (
-                <motion.button
-                  key={tab}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-2 py-1 md:px-8 md:py-3 rounded-full font-medium transition-all duration-300 flex items-center justify-center flex-grow ${
-                    activeTab === tab 
-                      ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg shadow-amber-500/30' 
-                      : 'text-slate-600 hover:bg-slate-100'
-                  }`}
-                >
-                  {tab === 'international' && <Globe className="w-3 h-3 md:w-5 md:h-5 mr-1 md:mr-2" />}
-                  {tab === 'local' && <MapPin className="w-3 h-3 md:w-5 md:h-5 mr-1 md:mr-2" />}
-                  {tab === 'fixesDeparture' && <Calendar className="w-3 h-3 md:w-5 md:h-5 mr-1 md:mr-2" />}
-                  <span className="text-xs md:text-base">
-                    {tab === 'fixesDeparture' ? 'Fixed Departures' : tab === 'local' ? 'Domestic' : tab.split(/(?=[A-Z])/).join(' ')}
-                  </span>
-                </motion.button>
-              ))}
-            </div>
+            <div className="grid grid-cols-2 gap-3 w-full md:flex md:justify-between md:flex-nowrap md:overflow-x-auto md:no-scrollbar md:space-x-2">
+  {['international', 'local', 'fixesDeparture', 'event'].map((tab) => (
+    <motion.button
+      key={tab}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={() => setActiveTab(tab)}
+      className={`p-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 text-sm sm:text-base ${
+        activeTab === tab
+          ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md shadow-amber-400/30'
+          : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+      }`}
+    >
+      {tab === 'international' && (
+        <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
+      )}
+      {tab === 'local' && (
+        <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
+      )}
+      {tab === 'fixesDeparture' && (
+        <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
+      )}
+      {tab === 'event' && (
+        <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
+      )}
+      <span className="whitespace-nowrap">
+        {tab === 'fixesDeparture'
+          ? 'Fixed Departures'
+          : tab === 'local'
+          ? 'Domestic'
+          : tab === 'event'
+          ? 'New Event'
+          : tab.charAt(0).toUpperCase() + tab.slice(1)}
+      </span>
+    </motion.button>
+  ))}
+</div>
+
           </motion.div>
         </div>
   

@@ -100,6 +100,9 @@ const HomePage = ({setIsScrolled,packages}) => {
     packages.fixesDeparture.forEach(pkg => {
       initialSlides[pkg.id] = 0;
     });
+    packages.event.forEach(pkg => {
+      initialSlides[pkg.id] = 0;
+    });
     setActiveSlide(initialSlides);
   }, []);
 

@@ -11,6 +11,7 @@ export default function AppLayout() {
       international: [],
       local: [],
       fixesDeparture: [],
+      event: []
     });
 
     useEffect(() => {
@@ -23,6 +24,7 @@ export default function AppLayout() {
               international: [],
               local: [],
               fixesDeparture: [],
+              event: []
             };
 
     
@@ -47,6 +49,8 @@ export default function AppLayout() {
                 categorizedPackages.local.push(formattedPackage);
               } else if (pkg.category === 'fixedDeparture') {
                 categorizedPackages.fixesDeparture.push(formattedPackage);
+              }else if (pkg.category === 'event') {
+                categorizedPackages.event.push(formattedPackage);
               }
             });
     
