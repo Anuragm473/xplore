@@ -191,7 +191,7 @@ export default function Contact({packages}) {
                   </div>
                   <div>
                     <p className="font-medium text-slate-700">Business Hours</p>
-                    <p className="text-slate-600 group-hover:text-amber-600 transition-colors">Monday-Sunday: 10AM-9PM EST</p>
+                    <p className="text-slate-600 group-hover:text-amber-600 transition-colors">Monday-Sunday: 10AM-9PM IST</p>
                   </div>
                 </div>
               </div>
