@@ -135,11 +135,45 @@ const HomePage = ({setIsScrolled,packages}) => {
   ];
 
 
-  const testimonials = [
-    { name: 'Sarah Johnson', location: 'New York', image: 'download.jfif', rating: 5, text: 'Our trip to Bali was absolutely perfect! The accommodations were luxurious and the local guide made us feel like family. Will definitely book with Xplore World again!' },
-    { name: 'David Chen', location: 'California', image: 'download.jfif', rating: 5, text: 'The Paris tour exceeded all expectations. Our guide was incredibly knowledgeable, and the itinerary had the perfect balance of iconic sites and hidden gems.' },
-    { name: 'Maya Patel', location: 'Texas', image: 'download.jfif', rating: 4, text: 'Yellowstone was breathtaking! The tour was well organized and our guide was passionate about wildlife conservation. The accommodations were comfortable and scenic.' }
-  ];
+ const testimonials = [
+  {
+    name: 'Sarah Johnson',
+    location: 'New York',
+    image: 'download.jfif',
+    rating: 5,
+    text: 'Our trip to Bali was absolutely perfect! The accommodations were luxurious and the local guide made us feel like family. Will definitely book with Xplore World again!'
+  },
+  {
+    name: 'Maya Patel',
+    location: 'Texas',
+    image: 'download.jfif',
+    rating: 4,
+    text: 'Yellowstone was breathtaking! The tour was well organized and our guide was passionate about wildlife conservation. The accommodations were comfortable and scenic.'
+  },
+  // ✅ Added Indian Reviews Below
+  {
+    name: 'Aarav Mehta',
+    location: 'Mumbai, India',
+    image: 'download.jfif',
+    rating: 5,
+    text: 'Visiting New York was like a dream. From the Empire State to Times Square, every corner felt cinematic. Xplore World made the entire journey smooth and safe.'
+  },
+  {
+    name: 'Priya Desai',
+    location: 'Ahmedabad, India',
+    image: 'download.jfif',
+    rating: 4,
+    text: 'As a solo traveler, I was nervous, but New York turned out to be wonderful. The itinerary had a great mix of sightseeing and local culture. Loved the food and city vibe!'
+  },
+  {
+    name: 'Rohit Kapoor',
+    location: 'Delhi, India',
+    image: 'download.jfif',
+    rating: 5,
+    text: 'Never thought I’d love NYC so much. The guided tour covered everything from Central Park to Brooklyn. Even found some great Indian food in Jackson Heights. Full marks to Xplore World!'
+  }
+];
+
 
   return (
     <div className="font-[Poppins] text-gray-800 overflow-x-hidden">
